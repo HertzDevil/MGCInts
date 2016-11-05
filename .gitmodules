@@ -1,0 +1,4 @@
+[submodule "sound-engine-docs"]
+	path = doc/include/engine
+	url = https://github.com/HertzDevil/sound-engine-docs.git
+	branch = master
