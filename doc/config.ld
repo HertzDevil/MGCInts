@@ -17,3 +17,4 @@ file = {
   "../src/mgcints/util",
 }
 dir = "html"
+examples = "include/examples"
