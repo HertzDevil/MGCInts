@@ -8,6 +8,8 @@ MGCInts is licensed under Mozilla Public License Version 2.0.
 
 MGCInts is in very early development stage. There might be backward-incompatible changes to the API even if the MML engines are usable in limited contexts. See `STATUS.md` for details.
 
+Also, the compiler does not back up your files right now, nor support non-destructive data insertion. Your music data might corrupt other tracks or even other parts of your output file.
+
 ### Features
 
 - One frontend, multiple target music drivers
