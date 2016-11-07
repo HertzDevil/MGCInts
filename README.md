@@ -21,7 +21,7 @@ Also, the compiler does not back up your files right now, nor support non-destru
 ### Prerequisites
 
 - [Lua](https://www.lua.org/) 5.1 or above (required; should be accessible as `lua` at the command prompt)
-- [argparse](https://github.com/mpeterv/argparse) (required (future versions should allow limited use of the frontend without argparse installed))
+- [argparse](https://github.com/mpeterv/argparse) (required for all command line options)
 
 ### Installation
 
