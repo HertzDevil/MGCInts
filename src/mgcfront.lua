@@ -111,7 +111,7 @@ local getargs; do
     end
   else
     getargs = function (t)
-      return true, {
+      return {
         command = "compile",
         compile = true,
         engine = t[1],
