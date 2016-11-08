@@ -8,7 +8,7 @@ MGCInts is licensed under Mozilla Public License Version 2.0.
 
 MGCInts is in very early development stage. There might be backward-incompatible changes to the API even if the MML engines are usable in limited contexts. See `STATUS.md` for details.
 
-Also, the compiler does not back up your files right now, nor support non-destructive data insertion. Your music data might corrupt other tracks or even other parts of your output file.
+Also, the compiler does not back up your files right now, nor support non-destructive data insertion. Your music data might corrupt other tracks or even other parts of your output file; however, a properly made engine will guarantee that the written data only affects existing music data.
 
 ### Features
 
@@ -61,11 +61,10 @@ Below is the structure of this repository:
 - `COPYING`: The software license (MPL-2.0)
 - `bin/`: System-dependent launchers
 - `doc/`: LDoc-generated guide and manual
-- `include/`: Tentative MML grammar definitions
 - `mml/`: Example MML songs
 - `src/mgcints/`: The framework source scripts
-  - `default/`: Default definitions
-  - `engine/`: Complete MML grammar definitions
+  - `default/`: Default object definitions
+  - `engine/`: MML grammar definitions
   - `mml/`: MML processing module
   - `music/`: Music data representation module
   - `util/`: Helper classes

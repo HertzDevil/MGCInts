@@ -221,4 +221,4 @@ end
 ]]
 local status = main(arg)
 collectgarbage()
-os.exit(status)
+os.exit(status, true)
