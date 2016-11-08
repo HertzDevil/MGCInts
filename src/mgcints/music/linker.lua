@@ -8,28 +8,48 @@
 local cls = {}
 
 local insert = table.insert
+local remove = table.remove
 local ipairs = ipairs
+local setmetatable = setmetatable
+local Check = require "mgcints.default.errors".RuntimeCheck
+
+-- properties
+local _pos = setmetatable({}, {__mode = "k"})
+local _offsetdelta = setmetatable({}, {__mode = "k"})
+local _currentblock = setmetatable({}, {__mode = "k"})
+local _blocks = setmetatable({}, {__mode = "k"})
+local _writerange = setmetatable({}, {__mode = "k"})
+
+local function isProtected (link, b, e)
+  local w = _writerange[link]
+  if not w then return true end
+  for _, v in ipairs(w) do if b >= v[1] and e <= v[2] then
+    return false
+  end end
+  return true
+end
 
 --- Linker initializer.
 function cls:__init ()
-  self.pos = 0
-  self.offsetdelta = 0
-  self.currentblock = nil
-  self.blocks = {}
+  _pos[self] = 0
+  _offsetdelta[self] = 0
+  _currentblock[self] = nil
+  _blocks[self] = {}
+  _writerange[self] = {}
 end
 
 --- Sets the offset between file addresses and mapped target addresses.
 -- @tparam int x Offset amount.
 function cls:setDelta (x)
-  self.offsetdelta = x
+  _offsetdelta[self] = x
 end
 
 --- Starts a new block of streams at a given file position.
 -- @tparam int x File address offset.
 function cls:setPos (x)
-  self.pos = x
-  self.currentblock = {pos = x}
-  insert(self.blocks, self.currentblock)
+  _pos[self] = x
+  _currentblock[self] = {pos = x}
+  insert(_blocks[self], _currentblock[self])
 end
 
 --- Adds a stream to the current block.
@@ -37,10 +57,35 @@ end
 -- Successive calls to this method push stream data sequentially until the next
 -- call to @{Music.Linker:setPos}.
 -- @tparam Music.Stream s Stream object.
+-- @raise Throws an error if any part of the stream lies in a protected range.
+-- The range must be writable at the time this method is called.
 function cls:addStream (s)
-  s:setBase(self.pos + self.offsetdelta)
-  self.pos = self.pos + s:getSize()
-  insert(self.currentblock, s)
+  s:setBase(_pos[self] + _offsetdelta[self])
+  local size = s:getSize()
+  Check(not isProtected(self, _pos[self], _pos[self] + size - 1),
+    "Writing to protected range")
+  _pos[self] = _pos[self] + size
+  insert(_currentblock[self], s)
+end
+
+--- Marks a range as writable.
+-- @tparam int b Start address, inclusive.
+-- @tparam int e End address, inclusive.
+function cls:writable (b, e)
+  if b > e then b, e = e, b end
+  local w = _writerange[self]
+  local i = 1
+  while i <= #w do
+    local v = w[i]
+    if b <= v[2] + 1 and e >= v[1] - 1 then
+      if b > v[1] then b = v[1] end
+      if e < v[2] then e = v[2] end
+      remove(w, i)
+    else
+      i = i + 1
+    end
+  end
+  insert(_writerange[self], {b, e})
 end
 
 --- Applies all added streams to a file.
@@ -49,12 +94,12 @@ end
 -- linker.
 -- @tparam file fn File handle with write access.
 function cls:flush (fn)
-  for _, v in ipairs(self.blocks) do
+  for _, v in ipairs(_blocks[self]) do
     fn:seek("set", v.pos)
     for _, s in ipairs(v) do fn:write(s:build()) end
   end
-  self.currentblock = nil
-  self.blocks = {}
+  _currentblock[self] = nil
+  _blocks[self] = {}
 end
 
 return require "mgcints.util.class" (cls)
