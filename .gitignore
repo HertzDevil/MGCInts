@@ -1,5 +1,4 @@
 makedoc.sh
-*.mml
 *.bin
 *.nes
 *.nsf

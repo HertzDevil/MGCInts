@@ -40,14 +40,14 @@ To insert a single song:
 $ mgcfront my_engine my_song.mml output.bin
 ```
 
-Alternatively, on Linux systems MML files may be directly "executed":
+On a Linux LuaRocks system user installation, MML files may be directly "executed":
 
 ```
 $ cat my_song.mml
-#!/usr/bin/env mgcfront my_engine
+#!/usr/local/bin/mgcfront my_engine
 /* ... */
 $ chmod u+x my_song.mml
-$ ./my_song.mml         # no output specified, uses "my_song.bin" as default
+$ ./my_song.mml output.bin
 ```
 
 ### Directory

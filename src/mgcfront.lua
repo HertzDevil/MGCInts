@@ -37,11 +37,13 @@ local notice = [[MGCInts Version 0.1.0
 This program is licensed under Mozilla Public License Version 2.0.]]
 local getargs; do
   local ipairs = ipairs
+  local unpack = table.unpack or unpack
   
   if has_argparse then
     local p = argparse():epilog(notice)
       :name "mgcfront"
       :description "The MML Generic Compiler Frontend"
+      :require_command(false)
     p:command_target "command"
 
     local cascade = function (t)
@@ -57,8 +59,8 @@ local getargs; do
     local ec = cascade {"engine", "input", "output"}
     local ic = cascade {"input", "output"}
     local oc = cascade {"output"}
-    local compile = p:command "compile":epilog(notice)
-      :description "Compiles a single MML file."
+    local compile = p --[[p:command "compile":epilog(notice)
+      :description "Compiles a single MML file."]]
     compile:argument "engine":args "?":action(ec)
       :description "Engine name"
     compile:argument "input":args "?":action(ic)
@@ -94,6 +96,7 @@ local getargs; do
       end
     end)
 
+--[[
     local multi = p:command "multi":epilog(notice)
       :description "Compiles multiple songs."
     multi:action(function ()
@@ -105,6 +108,7 @@ local getargs; do
     info:action(function ()
       info:error "not implemented"
     end)
+]]
   
     getargs = function (t)
       return p:parse(t)
@@ -118,7 +122,7 @@ local getargs; do
         input = t[2],
         output = t[3],
         track = 1,
-        param = {select(4, table.unpack(t))},
+        param = {select(4, unpack(t))},
       }
     end
   end
@@ -159,8 +163,9 @@ findEngine = function (name)
     return dofile(fn)
   end
   
-  if type((package.searchers or package.loaders)[2](md)) == "function" then
-    return require(md)
+  local suc, m = pcall(require, md)
+  if suc then
+    return m
   end
 end; end
 
@@ -194,7 +199,7 @@ local main = Ex.try(function (arg)
   local track = arg.track
   local mmlstr = f:read "*a"
   
-  if mmlstr:find "[^\x00-\x7F]" then
+  if mmlstr:find "[^\001-\127]" then
     Warning.warn "Input MML file contains non-ASCII characters"
   end
 
@@ -212,12 +217,7 @@ Ex, function (e)
 end)
 
 --[[
-if #arg == 0 then
-  arg = {
-    [-2] = arg[-2], [-1] = arg[-1],
-    "compile", "rc2", "../usr/rc2.mml", "../usr/rc2.nsf"
-  }
-end
+for k, v in pairs(arg) do print(k, v) end
 ]]
 local status = main(arg)
 collectgarbage()

@@ -1,0 +1,42 @@
+#!/usr/local/bin/mgcfront cv1
+
+; #support	cv1
+
+!123	k-be		; G Minor
+
+!1	@6,2,5,3,4 o2 l8
+!2	@6,3,4,2,3 o1 l8 D
+!3	@6,27 o1 l8
+!12	degf+gf+ff+
+!3	Hd He Hg Hf+ Hg16Hr16 Hf+16Hr16 Sf Sf+
+
+!2	@6,2,4,2,4
+!1	>d-4.<b4.g 2r4.g b>d-
+!2	>g 4. g4.d-2r4.d-g g
+!3	@6,27
+	o1 Hg Hb >Sd- Hd Hg Hb >Sd- Hd
+	o1 Hg @2,27 HbHbHb @6,27 >Sd- Hd
+	   Hg @2,27 HbHbHb @6,32 >Sd- Hd
+
+!1	l16	@6,2,1,1,0 e=
+		@6,2,2,2,0 e=
+		@6,2,3,3,0 e=
+		@6,2,4,4,0 e=
+	l8	@6,2,5,5,0 e=
+		@6,2,3,3,0 e
+		@6,2,4,4,0 e
+		@6,2,5,5,0 e
+		@6,2,6,6,0 e
+	l16	@6,2,7,7,0 e
+		@6,2,8,8,0 e
+!2	@6,2,6,4,3 o2 g4. @6,2,7,5,3 o2 g&2
+!3	@6,130     o2 b4.               a&2
+
+/*
+D: detune, can never be turned off
+H: hihat
+S: snare
+@a,b,c,d,e: set speed to a, duty to b, init volume to c,
+            target volume to d (must be less than c),
+            release length to e
+*/
