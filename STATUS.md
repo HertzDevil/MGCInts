@@ -16,3 +16,10 @@ Implementation for any of these features will increment the minor version number
 
 - `cv1`
   - Castlevania [Akumajou Dracula] (1987-05)(Konami).nsf
+  - Akumajou Dracula (J).nes
+  - Castlevania (E) [!].nes
+  - Castlevania (KC).nes
+  - Castlevania (PC10).nes
+  - Castlevania (U) (PRG0) [!].nes
+  - Castlevania (U) (PRG1) [!].nes
+  - ~~VS. Castlevania (VS).nes~~

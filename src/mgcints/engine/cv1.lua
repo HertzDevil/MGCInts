@@ -200,18 +200,32 @@ end):param "Uint8":param "Uint8":make "S" -- sweep
 
 engine:setupEngine(function (self, rom)
   local link = Music.Linker()
-  rom:seek("set", 0x8)
-  local LOAD = rom:read(2):readint(1, 2)
-  local bias = LOAD - 0x80
-  link:setDelta(bias)
+  local bias, delta
+  rom:seek("set", 0)
+  if rom:read(6) == "NESM\026\001" then -- NSF
+    rom:seek("set", 0x8)
+    local LOAD = rom:read(2):readint(1, 2)
+    bias = LOAD - 0x80
+    delta = bias
+  else
+    local mapper = math.floor(rom:read(1):byte() / 16)
+    mapper = mapper + 16 * math.floor(rom:read(1):byte() / 16)
+    bias = mapper == 0x63 and 0x7B0A or 0x7FF0
+    delta = 0x8000 - 0x10
+    if mapper == 0x63 then
+      -- v.s. castlevania has checksums
+      Check(false, "V.S. System mapper detected")
+    end
+  end
   
   rom:seek("set", 0x8185 - bias)
   local tablebase = rom:read(2):readint(1, 2)
-  link:writable(tablebase - bias, tablebase - bias + 0x116)
+  link:writable(tablebase - delta, tablebase - delta + 0x116)
   link:writable(0x8C02 - bias, 0xB500 - bias)
+  link:setDelta(delta)
   
   self.link = link
-  self.bias = bias
+  self.delta = delta
   self.tablebase = tablebase
 end)
 
@@ -220,7 +234,7 @@ engine:setInserter(function (self, rom, song, track)
   local songbase = self.tablebase + tindex * 3
   
   local link = self.link
-  local bias = self.bias
+  local delta = self.delta
   
   local header = Music.Stream()
   header:push(0x80)
@@ -229,11 +243,11 @@ engine:setInserter(function (self, rom, song, track)
   header:push(Pointer(song:getChannel(2):getStream(), "START"))
   header:push(0x08)
   header:push(Pointer(song:getChannel(3):getStream(), "START"))
-  link:setPos(rom:seek("set", songbase - bias))
+  link:setPos(rom:seek("set", songbase - delta))
   link:addStream(header)
   
   local base = rom:read(3):readint(2, 2) -- skip first byte
-  link:setPos(base - bias)
+  link:setPos(base - delta)
   song:doAll(function (ch)
     link:addStream(ch:getStream())
   end)
