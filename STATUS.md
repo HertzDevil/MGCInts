@@ -15,7 +15,7 @@ Implementation for any of these features will increment the minor version number
 #### Supported images
 
 - `cv1`
-  - Castlevania [Akumajou Dracula] (1987-05)(Konami).nsf
+  - Castlevania \[Akumajou Dracula\] (1987-05)(Konami).nsf
   - Akumajou Dracula (J).nes
   - Castlevania (E) [!].nes
   - Castlevania (KC).nes
