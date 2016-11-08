@@ -33,10 +33,11 @@
 !3	@6,130     o2 b4.               a&2
 
 /*
-D: detune, can never be turned off
-H: hihat
-S: snare
+D: detune, can never be turned off once issued
+H: hihat, triangle only
+S: snare, triangle only
 @a,b,c,d,e: set speed to a, duty to b, init volume to c,
             target volume to d (must be less than c),
             release length to e
+@a,b: set speed to a, triangle linear counter to b
 */

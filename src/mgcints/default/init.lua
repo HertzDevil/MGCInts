@@ -81,8 +81,7 @@ DEFAULT.Macros = require "mgcints.default.macros"
 --
 -- - `song`: A blank subclass of @{Music.Song};
 -- - `channel`: A blank subclass of @{Music.Channel};
--- - `parser`: An @{MML.Parser} object using the default tables;
--- - `inserter`: A do-nothing function.
+-- - `parser`: An @{MML.Parser} object using the default tables.
 -- @function Engine
 -- @tparam[opt=1] int chcount Channel count.
 -- @tparam[opt] string Engine name.

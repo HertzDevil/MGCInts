@@ -109,6 +109,8 @@ end
 -- @tparam file rom Output file.
 -- @tparam int track Track index.
 function cls.processFile (engine, mml, rom, track)
+  engine:callSetup(rom)
+  
   local song = engine:makeSong()
 --  local Profiler = require "mgcints.util.globalprofiler" ()
   

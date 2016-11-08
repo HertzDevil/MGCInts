@@ -198,7 +198,7 @@ end):param "Uint8":param "Uint8":make "S" -- sweep
 
 
 
-engine:setInserter(function (rom, song, track)
+engine:setupEngine(function (self, rom)
   local link = Music.Linker()
   rom:seek("set", 0x8)
   local LOAD = rom:read(2):readint(1, 2)
@@ -210,8 +210,17 @@ engine:setInserter(function (rom, song, track)
   link:writable(tablebase - bias, tablebase - bias + 0x116)
   link:writable(0x8C02 - bias, 0xB500 - bias)
   
+  self.link = link
+  self.bias = bias
+  self.tablebase = tablebase
+end)
+
+engine:setInserter(function (self, rom, song, track)
   local tindex = 0x27 + (track - 1) * 3
-  local songbase = tablebase + tindex * 3
+  local songbase = self.tablebase + tindex * 3
+  
+  local link = self.link
+  local bias = self.bias
   
   local header = Music.Stream()
   header:push(0x80)

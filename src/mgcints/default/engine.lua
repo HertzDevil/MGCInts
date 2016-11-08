@@ -20,7 +20,6 @@ local create = function (x, s)
     channel = Class({}, Channel),
     chcount = tonumber(x) or 1,
     parser = Parser(Macros(), Directives()),
-    inserter = function () end,
     name = tostring(s or "(Unnamed)"),
   }
 end

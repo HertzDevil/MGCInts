@@ -17,6 +17,9 @@ local Check = require "mgcints.default.errors".RuntimeCheck
 local type = type
 local pcall = pcall
 
+local _setup = setmetatable({}, {__mode = "k"})
+local _inserter = setmetatable({}, {__mode = "k"})
+
 --- Engine initializer.
 -- @tparam table defs An engine definition, which requires the following
 -- fields:<ul>
@@ -28,16 +31,16 @@ local pcall = pcall
 -- <li> `chcount`: The default channel count;</li>
 -- <li> `parser`: An @{MML.Parser} object containing command definitions for the
 -- engine;</li>
--- <li> `inserter`: A function which has the same parameters as @{insertData}
--- (except `self`).
--- </li>
+-- <li> `setup`: If present, passed to @{setupEngine};</li>
+-- <li> `inserter`: If present, passed to @{setInserter}.</li>
 -- </ul>
 function cls:__init (defs)
   self.song = defs.song
   self.chcount = defs.chcount
   self.channel = defs.channel
   self.parser = defs.parser
-  self._inserter = defs.inserter
+  _inserter[self] = defs.inserter or function () end
+  _setup[self] = defs.setup or function () end
   self.name = defs.name or "(Unnamed)"
   
   self.features = {}
@@ -46,7 +49,7 @@ function cls:__init (defs)
            type(self.chcount) == "number" and
            Class.subclassof(self.channel, require "mgcints.music.channel") and
            Class.instanceof(self.parser, require "mgcints.mml.parser") and
-           type(self._inserter) == "function" and
+           type(_inserter[self]) == "function" and
            type(self.name) == "string", "Invalid engine definition")
 end
 
@@ -90,10 +93,29 @@ function cls:makeSong ()
 end
 
 --- Sets the inserter function of the engine.
+-- This function is called every time the engine inserts a song.
 -- @tparam func f A function which has the same parameters as @{insertData}
--- (except `self`).
+-- (including `self`).
 function cls:setInserter (f)
-  self._inserter = f
+  _inserter[self] = f
+end
+
+--- Sets the setup callback of the engine.
+-- This function is called exactly once before the engine is used to insert any
+-- number of songs.
+-- @tparam func f A function receiving the engine object and the output file as
+-- its parameters.
+function cls:setupEngine (f)
+  _setup[self] = f
+end
+
+--- Invokes the setup callback.
+--
+-- Also clears the callback after calling this method.
+-- @tparam file rom A file opened in "r+b" mode.
+function cls:callSetup (rom)
+  _setup[self](self, rom)
+  _setup[self] = function () end
 end
 
 --- Inserts song data into a file.
@@ -102,7 +124,7 @@ end
 -- engine's song class.
 -- @tparam[opt=1] int track Track index.
 function cls:insertData (rom, song, track)
-  self._inserter(rom, song, track)
+  _inserter[self](self, rom, song, track)
 end
 
 --- Imports a feature to the engine.
