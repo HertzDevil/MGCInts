@@ -42,7 +42,9 @@ local getargs; do
   if has_argparse then
     local p = argparse():epilog(notice)
       :name "mgcfront"
-      :description "The MML Generic Compiler Frontend"
+      :description [[The MML Generic Compiler Frontend
+
+Compiles a single MML file.]]
       :require_command(false)
     p:command_target "command"
 
@@ -59,40 +61,38 @@ local getargs; do
     local ec = cascade {"engine", "input", "output"}
     local ic = cascade {"input", "output"}
     local oc = cascade {"output"}
-    local compile = p --[[p:command "compile":epilog(notice)
-      :description "Compiles a single MML file."]]
-    compile:argument "engine":args "?":action(ec)
+    p:argument "engine":args "?":action(ec)
       :description "Engine name"
-    compile:argument "input":args "?":action(ic)
+    p:argument "input":args "?":action(ic)
       :description "Input file"
-    compile:argument "output":args "?":action(oc)
+    p:argument "output":args "?":action(oc)
       :description "Output/patch file"
-    compile:argument "param":args "*":action "concat"
+    p:argument "param":args "*":action "concat"
       :description "Engine-dependent parameters"
 
     local a_o_mutex = function (k, s1, s2)
       local errstr = ("Cannot use both %s and %s"):format(s1, s2)
       return function (arg, _, v)
         if not v then return end
-        if arg[k] then compile:error(errstr) end
+        if arg[k] then p:error(errstr) end
         arg[k] = v
       end
     end
     local em = a_o_mutex("engine", "<engine>", "-e")
     local im = a_o_mutex("input", "<input>", "-i")
     local om = a_o_mutex("output", "<output>", "-o")
-    compile:option "-e --engine":overwrite(false):action(em)
+    p:option "-e --engine":overwrite(false):action(em)
       :description "Specify the engine name, out of order."
-    compile:option "-i --input":overwrite(false):action(im)
+    p:option "-i --input":overwrite(false):action(im)
       :description "Specify the input file, out of order."
-    compile:option "-o --output":overwrite(false):action(om)
+    p:option "-o --output":overwrite(false):action(om)
       :description "Specifiy the output/patch file, out of order."
-    compile:option "-t --track":default "1":convert(tonumber)
+    p:option "-t --track":default "1":convert(tonumber)
         :description "Set the track number."
 
-    compile:action(function (arg)
+    p:action(function (arg)
       if not arg.engine then
-        compile:error "missing argument 'engine'"
+        p:error "missing argument 'engine'"
       end
     end)
 

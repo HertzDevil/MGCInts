@@ -44,6 +44,14 @@ function cls:setDelta (x)
   _offsetdelta[self] = x
 end
 
+--- Sets the current position of a file using a mapped address.
+-- @tparam file fn File handle.
+-- @tparam int x Target address value.
+-- @treturn int The corresponding real file address.
+function cls:seekDelta (fn, x)
+  return fn:seek("set", x - _offsetdelta[self])
+end
+
 --- Starts a new block of streams at a given file position.
 -- @tparam int x File address offset.
 function cls:setPos (x)

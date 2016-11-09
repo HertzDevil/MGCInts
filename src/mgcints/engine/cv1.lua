@@ -234,7 +234,6 @@ engine:setInserter(function (self, rom, song, track)
   local songbase = self.tablebase + tindex * 3
   
   local link = self.link
-  local delta = self.delta
   
   local header = Music.Stream()
   header:push(0x80)
@@ -243,16 +242,18 @@ engine:setInserter(function (self, rom, song, track)
   header:push(Pointer(song:getChannel(2):getStream(), "START"))
   header:push(0x08)
   header:push(Pointer(song:getChannel(3):getStream(), "START"))
-  link:setPos(rom:seek("set", songbase - delta))
+  link:setPos(link:seekDelta(rom, songbase))
   link:addStream(header)
   
   local base = rom:read(3):readint(2, 2) -- skip first byte
-  link:setPos(base - delta)
+  link:setPos(link:seekDelta(rom, base))
   song:doAll(function (ch)
     link:addStream(ch:getStream())
   end)
-  
-  link:flush(rom)
+end)
+
+engine:finishEngine(function (self, rom)
+  self.link:flush(rom)
 end)
 
 return engine

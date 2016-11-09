@@ -105,34 +105,26 @@ end
 
 --- The main program.
 -- @tparam Music.Engine engine The engine definition.
--- @tparam string mml Input MML text.
+-- @tparam string|table mml Input MML text, or a list of MML texts.
 -- @tparam file rom Output file.
--- @tparam int track Track index.
+-- @tparam int|table track Track index, or a list of track indices.
 function cls.processFile (engine, mml, rom, track)
   engine:callSetup(rom)
+
+  if type(mml) ~= "table" then mml = {mml} end
+  if type(track) ~= "table" then track = {track} end
+  assert(#mml == #track, "MML / track list mismatch")
   
-  local song = engine:makeSong()
---  local Profiler = require "mgcints.util.globalprofiler" ()
-  
---  Profiler:enter "preprocess"
-  mml = cls.preprocess(song, mml)
---  Profiler:exit "preprocess"
-  
---  Profiler:enter "precompile"
-  cls.precompile(song)
---  Profiler:exit "precompile"
-  
---  Profiler:enter "compile"
-  cls.compile(song, mml)
---  Profiler:exit "compile"
-  
---  Profiler:enter "postcompile"
-  cls.postcompile(song)
---  Profiler:exit "postcompile"
-  
---  Profiler:enter "postprocess"
-  cls.postprocess(song, rom, track)
---  Profiler:exit "postprocess"
+  for i, v in ipairs(track) do
+    local song = engine:makeSong()
+    local _mml = cls.preprocess(song, mml[i])
+    cls.precompile(song)
+    cls.compile(song, _mml)
+    cls.postcompile(song)
+    cls.postprocess(song, rom, v)
+  end
+
+  engine:callFinish(rom)
 end
 
 return cls

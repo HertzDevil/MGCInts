@@ -18,6 +18,7 @@ local type = type
 local pcall = pcall
 
 local _setup = setmetatable({}, {__mode = "k"})
+local _finish = setmetatable({}, {__mode = "k"})
 local _inserter = setmetatable({}, {__mode = "k"})
 
 --- Engine initializer.
@@ -32,6 +33,7 @@ local _inserter = setmetatable({}, {__mode = "k"})
 -- <li> `parser`: An @{MML.Parser} object containing command definitions for the
 -- engine;</li>
 -- <li> `setup`: If present, passed to @{setupEngine};</li>
+-- <li> `finish`: If present, passed to @{finishEngine};</li>
 -- <li> `inserter`: If present, passed to @{setInserter}.</li>
 -- </ul>
 function cls:__init (defs)
@@ -40,6 +42,7 @@ function cls:__init (defs)
   self.channel = defs.channel
   self.parser = defs.parser
   _inserter[self] = defs.inserter or function () end
+  _finish[self] = defs.finish or function () end
   _setup[self] = defs.setup or function () end
   self.name = defs.name or "(Unnamed)"
   
@@ -109,6 +112,15 @@ function cls:setupEngine (f)
   _setup[self] = f
 end
 
+--- Sets the finish callback of the engine.
+-- This function is called exactly once after the engine is used to insert any
+-- number of songs.
+-- @tparam func f A function receiving the engine object and the output file as
+-- its parameters.
+function cls:finishEngine (f)
+  _finish[self] = f
+end
+
 --- Invokes the setup callback.
 --
 -- Also clears the callback after calling this method.
@@ -116,6 +128,15 @@ end
 function cls:callSetup (rom)
   _setup[self](self, rom)
   _setup[self] = function () end
+end
+
+--- Invokes the finish callback.
+--
+-- Also clears the callback after calling this method.
+-- @tparam file rom A file opened in "r+b" mode.
+function cls:callFinish (rom)
+  _finish[self](self, rom)
+  _finish[self] = function () end
 end
 
 --- Inserts song data into a file.
