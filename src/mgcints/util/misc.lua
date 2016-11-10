@@ -5,9 +5,13 @@
 --- Miscellaneous utility functions.
 -- @module util.Misc
 
+local require = require
 local setmetatable = setmetatable
 local select = select
 local load = loadstring or load
+local dofile = dofile
+local type = type
+local pcall = pcall
 local pairs = pairs
 
 local arglist; do
@@ -159,6 +163,61 @@ end; end
 -- @function join
 local join = curry(papply(select, 1))
 
+--- The MML engine searcher.
+--
+-- For a given engine name such as `test`, this function searches for the engine
+-- definition at the following locations, in the given order:
+--
+-- - `test.lua` at the current working directory;
+-- - `$(MGCFRONT_INCLUDE)/test.lua`. This extra search path must be manually
+-- added;
+-- - `$(MGCINTS_PATH)/include/engine/test.lua`. This is where work-in-progress
+-- engine definitions go in the distribution;
+-- - `$(MGCINTS_PATH)/src/mgcints/engine/test.lua`. Complete engine definitions
+-- can be found there;
+-- - A Lua module called `mgcints.engine.test`, possibly using the `$(LUA_PATH)`
+-- environment variable.
+-- @tparam string name Engine name.
+-- @function findEngine
+local findEngine; do
+  local fileExists = function (fname)
+    if type(fname) == "string" then
+      local f = io.open(fname, "r")
+      if f then
+        f:close()
+        return fname
+      end
+    end
+  end
+  local envPath = function (value, fname)
+    local data = os.getenv(value)
+    if data then
+      if not data:find "[/\\]$" then
+        data = data .. "/"
+      end
+      return fileExists(data .. fname)
+    end
+  end
+findEngine = function (name)
+  if not name then return end
+  if not name:find "%.lua$" then
+    name = name .. ".lua"
+  end
+  local md = "mgcints.engine." .. name:gsub("%.lua$", "")
+  local fn = fileExists(name)
+    or envPath("MGCFRONT_INCLUDE", name)
+    or envPath("MGCINTS_PATH", "include/engine/" .. name)
+    or envPath("MGCINTS_PATH", "src/mgcints/engine/" .. name)
+  if fn then
+    return dofile(fn)
+  end
+  
+  local suc, m = pcall(require, md)
+  if suc then
+    return m
+  end
+end; end
+
 return {
   car_cdr = car_cdr,
   curry = curry,
@@ -168,4 +227,5 @@ return {
   papply = papply,
   weak = weak,
   wrap = wrap,
+  findEngine = findEngine,
 }

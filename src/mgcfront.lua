@@ -5,19 +5,6 @@
 -- file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 --- The main compiler-inserter frontend script.
---
--- For a given engine name such as `test`, the compiler frontend searches for
--- the engine definition at the following locations, in the given order:
---
--- - `test.lua` at the current working directory;
--- - `$(MGCFRONT_INCLUDE)/test.lua`. This extra search path must be manually
--- added;
--- - `$(MGCINTS_PATH)/include/engine/test.lua`. This is where work-in-progress
--- engine definitions go in the distribution;
--- - `$(MGCINTS_PATH)/src/mgcints/engine/test.lua`. Complete engine definitions
--- can be found there;
--- - A Lua module called `mgcints.engine.test`, possibly using the `$(LUA_PATH)`
--- environment variable.
 -- @script mgcfront
 -- @author HertzDevil
 -- @copyright 2016
@@ -130,48 +117,10 @@ end
 
 local Ex = require "mgcints.util.exception"
 
-local findEngine; do
-  local fileExists = function (fname)
-    if type(fname) == "string" then
-      local f = io.open(fname, "r")
-      if f then
-        f:close()
-        return fname
-      end
-    end
-  end
-  local envPath = function (value, fname)
-    local data = os.getenv(value)
-    if data then
-      if not data:find "[/\\]$" then
-        data = data .. "/"
-      end
-      return fileExists(data .. fname)
-    end
-  end
-findEngine = function (name)
-  if not name then return end
-  if not name:find "%.lua$" then
-    name = name .. ".lua"
-  end
-  local md = "mgcints.engine." .. name:gsub("%.lua$", "")
-  local fn = fileExists(name)
-    or envPath("MGCFRONT_INCLUDE", name)
-    or envPath("MGCINTS_PATH", "include/engine/" .. name)
-    or envPath("MGCINTS_PATH", "src/mgcints/engine/" .. name)
-  if fn then
-    return dofile(fn)
-  end
-  
-  local suc, m = pcall(require, md)
-  if suc then
-    return m
-  end
-end; end
-
 local main = Ex.try(function (arg)
   os.setlocale "C"
   local Warning = require "mgcints.util.warning"
+  local findEngine = require "mgcints.util.misc".findEngine
   
   if not has_argparse then
     Warning.warn "Module 'argparse' not installed"

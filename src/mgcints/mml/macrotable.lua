@@ -27,9 +27,11 @@ function cls:addCommand (name, cmd)
 end
 
 --- Reads the next command from an MML string.
--- @tparam util.StringView sv String view object containing the input MML.
--- @treturn table A sequence containing all @{MML.Command} objects in the order
--- they were added.
+-- @tparam util.StringView sv String view object containing the input MML. It is
+-- modified if there is a successful match.
+-- @treturn ?table A sequence containing all @{MML.Command} candidates in the
+-- order they were added, corresponding to the command string matched at the
+-- beginning of the string. If no such command exists, returns `nil`.
 function cls:readNext (sv)
   local k, ft = self.commands:lookup(sv)
   if not k then return nil end

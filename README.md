@@ -56,6 +56,7 @@ Below is the structure of this repository:
 
 - `README.md`: This file
 - `STATUS.md`: Project status and supported engines
+- `FAQ.md`: Frequently asked questions
 - `CONTRIB.md`: Guidelines for submitting sound engines
 - `CHANGES.md`: Change log
 - `COPYING`: The software license (MPL-2.0)
