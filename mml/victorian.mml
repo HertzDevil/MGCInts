@@ -1,0 +1,181 @@
+#!/usr/local/bin/mgcfront cv1
+
+#remap	3 T
+$$ALL	!12T
+
+; VICTORIAN FEAR
+; Castlevania: Portrait of Ruin
+; not fully optimized, stay tuned for pattern support
+
+
+
+$ALL	k+f		; E Minor
+
+!12	@4,0,0,0,0 r8.
+!1	@6,1,6,3,2 l16 o4
+!2	@6,3,5,3,2 l16 o3 D
+!12	r4 e<bgebge<b>>c<aecaec<a>b>cc+d+
+
+!1	@6,2,2,2,2 o1 l4
+	[b2a+b2.]2
+
+!2	@6,3,5,1,0 >
+	[e o1 fgbefgbefgb- efgbefgbefg>d o1]2
+
+!T	@4,130 l16 SrSrSr @6,130
+	o1 Se4>SeSeSeSe<SbSbSbSb >Sc4<Sa+Sa+Sa+Sa+>Sd+4
+	@6,14 o1 l8
+	[HeHxSxHx16x16Hr16x16Hx]4
+
+
+
+$ALL	/
+
+!1	@6,1,6,3,3 o3
+	g2<ba+2g>g<ba+>f<a2 gab>e2<g>d+2c<b2.>
+
+!2	@6,0,5,1,0 o1
+	[efgb]3 [efgb-]3 [efgb]3 [efga]3 [efgb]6 [d+fa>c<]3 [d+fab]3
+
+!T	@6,14 o1
+	[HeHxSxHx16x16Hr16x16Hx]5
+	>HcHxSxHx16x16Hr16x16Hx<
+	[HbHxSxHx16x16Hr16x16Hx]2
+
+
+
+$ALL	k+cgdae		; D# Minor
+
+!1	@6,2,6,3,3
+!2	@6,1,5,3,3 o2 l4
+!12	defa2fdef>d2c<b>cdg2<b>f2.e2.
+
+!T	>HdHxSxHx16x16Hr16x16Hx
+	 HcHxSxHx16x16Hr16x16Hx<
+	[HbHxSxHx16x16Hr16x16Hx]2
+	 HgHxSxHx16x16Hr16x16Hx
+	 HfHxSxHx16x16Hr16x16Hx
+	 HeHxSxHx16x16Hr16x16Hx
+	 HaHxSxHx16x16Hr16x16Hx
+
+
+
+!1	d2.r2. @6,1,5,3,2 l16 <
+!2	@6,1,5,3,2 l16 <
+	defgade=fgab>c<defgade=gbgb>e=
+!12	defgade=fgab>c<defgade=gbgb>e=
+
+!1	o3
+!2	@6,0,4,0,0 o2
+!12	[dcd<b>d<a>d<g>d<f>d<e>]4
+
+!T	[HdHx16Hr16Hx16Hr16SxHxHx]3
+	 HdHx16Hr16Hx16Hr16SxSx16Sr16Sx16Sr16
+	[HdHxHxSx16Hr16Hx16Hr16x16Hr16]3
+	 HdHxSx16Sr16Sx16Sr16x16Sr16Sx
+
+
+
+$ALL	k=cgdae		; E Minor
+
+!12	@6,2,5,3,3 l4
+!1	o3 e2.<e2.>e2. f 2.gf g ed+c<ba+bgf g
+!2	o2 b2.<b2.>b2.>c+2.dc+d<ba+g fe+fdc+d
+
+!T	[@6,14 HeHe @6,130 SbHe16b-16Hb-Ha]7
+	 @6,14 HeHe @6,130 SbHe16b-16Sb-16Sb-16Sa16Sa16
+
+
+
+$ALL	k=f k-bead	; F Minor
+
+!1	>f2.<f2.>f2.g 2.abb=>c<ag f dc<ag f
+!2	>c2.<c2.>c2.d=2.eff+ g ed=c<ag ed=c
+!1	c2.d2.f2.d2.>c2.d2.f2.g2.
+!2	@6,3,4,2,1 o2 l16
+	[cdcdefefgaga]2 > [cdcdefefgaga]2
+	@6,0,7,4,4 o1
+	c2.d2.a2.e=2.
+
+!T	[@6,14  HfHf @6,130 >Sc<Hf16 b=16Hb=H b]8
+	[@6,14 >HcHc @6,130  Sc<Hg16>d 16Hd H<b]3
+	 @6,14 >HcHc @6,130  Sc<Hg16>d 16Hd H<a
+	[@6,14 >HcHc @6,130  Sc<Hg16>d 16Hd H<b]3
+	@6,14 >Hc16c16Sr16c16Sr16c16 @6,130 HdSd=16Sd=16Sa16Sa16
+
+
+
+$ALL	k=bead k+f	; E Minor
+
+!1	@6,1,6,3,3 o3 l4
+	g2<ba+2g>gaa+bge e-2c<a-2e->e-f=ga-2b-
+	@12,1,6,3,0 b2. @12,1,2,2,3 b2.
+
+!2	@6,0,5,1,0
+	[efgb]2 efg>d< [efgb-]3 [efgb]6
+	[cde-gcde-gcde-g a-b-b>e-<a-b-b>e-<a-b-b>e-<]2
+	@6,1,5,2,1
+	[b>c+df<b>c+df<b>c+df< b>c+df=<b>c+df=<b>c+df=<]2
+
+!T	@6,14 o1
+	[ He HxSxHx16 @6,130 x16Hx16 @6,14 x16Hx]4
+	[>Hc HxSxHx16 @6,130 x16Hx16 @6,14 x16Hx
+	 <Ha-HxSxHx16 @6,130 x16Hx16 @6,14 x16Hx]2
+	[ Hb HxSxHx16 @6,130 x16Hx16 @6,14 x16Hx]4
+
+
+
+$ALL	k+c		; B Minor
+
+!1	@6,1,6,4,4
+	<f2>dc2<ed2ba2gf2>fec<ag2db2a+>
+
+!2	@6,0,5,2,1 o2
+	[>dc<bf]3 [>c<bae]3 [bagd]5 a+g+fc
+	[>dc<bf]3 [>c<bae]3 [bagd]5 a+g+fc
+
+!T	[Hb HxSxHx16 @6,130 x16Hx16 @6,14 x16Hx
+	 Ha HxSxHx16 @6,130 x16Hx16 @6,14 x16Hx
+	 Hg HxSxHx16 @6,130 x16Hx16 @6,14 x16Hx
+	 He HxSxHx16 @6,130 f16Hx16 @6,14 x16Hx]2
+
+
+
+$ALL	k=fc		; A Minor
+
+!12	@6,2,5,3,3 l4
+!1	ge<b>ec<g>a ecec<a>>c<a f a fcd<a f>f d<b-
+!2	bg e ge c>c<aeae c >f c<a>c<aff d<a>b-f d
+
+!T	@6,130 l16 >
+	Hg4SeSx8.<SbSx8.>He4ScSx8.<SgSx8.>Ha4SeSx8.ScSx8.
+	SeSxSxSxScSxSxSx<SaSxSxSx>
+	Hc4<SaSx8.SfSx8.Ha4SfSx8.>ScSx8.Hd4<SaSx8.SfSx8.>
+	SfSxSxSxSdSxSxSx<Sb-SxSxSx
+
+
+
+$ALL	k-b		; D Minor
+
+!12	@6,1,5,3,1 l16
+!1	[o2 ddrd8de-4e r]2  frb=r
+!2	[o1 aara8ab 4b=r]2 >crf+r
+!1	[o2 ddrd8de-4e r]2  frb=r>c+r gr
+!2	[o1 aara8ab 4b=r]2 >crf+r g+r>dr
+
+!T	@6,14 l8
+	[Hd HxSxHx16 @6,130 x16Hx16 @6,14 x16Hx]2 SxHx
+	[Hd HxSxHx16 @6,130 x16Hx16 @6,14 x16Hx]2 SxHxSx16Sx16Sx16Sx16
+
+
+
+$ALL	k=b k+f		; E Minor
+
+!1	[o2 eere8e f=4f r]2 gr>c+r
+!2	[o1 bbrb8b>c 4c+r]2 dr g+r
+!1	[o2 eere8e f=4f r]2 gr>c+rd+r ar
+!2	[o1 bbrb8b>c 4c+r]2 dr g+ra+r>er
+
+!T	[He HxSxHx16 @6,130 x16Hx16 @6,14 x16Hx]2 SxHx
+	[He HxSxHx16 @6,130 x16Hx16 @6,14 x16Hx]1
+	Sx16SxSxSx16 @6,130 Sf=Sf= @6,26 HfSg>Hc+ Sd+16Sd+16Sa16Sa16

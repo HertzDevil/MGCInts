@@ -114,6 +114,11 @@ for name, val in pairs {c = 0, d = 2, e = 4, f = 5, g = 7, a = 9, b = 11} do
 end
 builder:setHandler(function (ch, durfunc)
   if not ch:isMuted() then
+    ch:addChunk(ch.lastnote * 0x10 + durfunc(DURATION[ch.duration:get()]) - 1)
+  end
+end):param(lengthLexer):make "x"
+builder:setHandler(function (ch, durfunc)
+  if not ch:isMuted() then
     ch:addChunk(0xC0 + durfunc(DURATION[ch.duration:get()]) - 1)
   end
 end):param(lengthLexer):make "r"
