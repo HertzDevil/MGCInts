@@ -226,7 +226,7 @@ engine:setupEngine(function (self, rom)
   rom:seek("set", 0x8185 - bias)
   local tablebase = rom:read(2):readint(1, 2)
   link:writable(tablebase - delta, tablebase - delta + 0x116)
-  link:writable(0x8C02 - bias, 0xB500 - bias)
+  link:writable(0x88B6 - bias, 0xB500 - bias)
   link:setDelta(delta)
   
   self.link = link

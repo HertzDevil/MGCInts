@@ -2,11 +2,12 @@
 
 #### Version
 
-0.1.0 (alpha)
+0.1.1 (alpha)
 
 #### Roadmap
 
-- Support for inserting multiple songs
+- ~~Support for inserting multiple songs~~ Separate compilation
+- Unified model for relocating music data
 - Multiple grammars for single sound engine (as when specifying instrument data with the MML parser but none of the default commands)
 - Embedding help text in grammar definitions
 

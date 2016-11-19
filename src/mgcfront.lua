@@ -9,7 +9,7 @@
 -- @author HertzDevil
 -- @copyright 2016
 -- @license Mozilla Public License Version 2.0
--- @release v0.1.0
+-- @release v0.1.1
 
 local require = require
 local tostring = tostring
@@ -19,7 +19,7 @@ local collectgarbage = collectgarbage
 local open = io.open
 
 local has_argparse, argparse = pcall(require, "argparse")
-local notice = [[MGCInts Version 0.1.0
+local notice = [[MGCInts Version 0.1.1
 (C) HertzDevil 2016
 This program is licensed under Mozilla Public License Version 2.0.]]
 local getargs; do

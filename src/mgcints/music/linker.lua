@@ -70,8 +70,10 @@ end
 function cls:addStream (s)
   s:setBase(_pos[self] + _offsetdelta[self])
   local size = s:getSize()
-  Check(not isProtected(self, _pos[self], _pos[self] + size - 1),
-    "Writing to protected range")
+  if isProtected(self, _pos[self], _pos[self] + size - 1) then
+    Check(false, ("Writing to protected range near $%X - $%X"):format(
+      _pos[self], _pos[self] + size - 1))
+  end
   _pos[self] = _pos[self] + size
   insert(_currentblock[self], s)
 end
