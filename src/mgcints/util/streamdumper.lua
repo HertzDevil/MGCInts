@@ -198,6 +198,10 @@ do
     [ARGFUNC.int16] = '# % 0x100, math.floor(# / 0x100)',
     [ARGFUNC.int16be] = 'math.floor(# / 0x100), # % 0x100',
   }
+  local fmt = [[
+builder:setHandler(function (%s)
+  ch:addChunk(%s)
+end)%s:make "%s"]]
   local header = [[
 local Default = require "mgcints.default"
 local MML = require "mgcints.mml"
@@ -208,11 +212,17 @@ local engine = Default.Engine(CHANNELS)
 
 
 
-local Channel = engine:getChannelClass().__mt.__index
+local Channel = engine:getChannelClass()
+
+Channel:beforeCallback(function (self)
+end)
+
+Channel:afterCallback(function (self)
+end)
 
 
 
-local Song = engine:getSongClass().__mt.__index
+local Song = engine:getSongClass()
 
 
 
@@ -220,10 +230,6 @@ builder:setTable(engine:getCommandTable())
 
 
 ]]
-  local fmt = [[
-builder:setHandler(function (%s)
-  ch:addChunk(%s)
-end)%s:make "%s"]]
   local footer = [[
 
 
@@ -232,8 +238,20 @@ builder:setTable(engine:getDirectiveTable())
 
 
 
-engine:setInserter(function (rom, song, track)
+engine:setupEngine(function (self, rom)
+  local link = Music.Linker()
+  self.link = link
 end)
+
+engine:setInserter(function (self, rom, song, track)
+  local link = self.link
+end)
+
+engine:finishEngine(function (self, rom)
+  self.link:flush(rom)
+end)
+
+
 
 return engine
 ]]
