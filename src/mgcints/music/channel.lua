@@ -31,11 +31,17 @@ function cls:__init (id, ...)
   self.loopstream = {[0] = Stream()}
   self.stream = self.loopstream[0]
   self.lastcount = 0
+  self.parent = nil
 end
 
 --- Returns the channel index.
 function cls:getID ()
   return self.id
+end
+
+--- Returns the parent @{Music.Song} object.
+function cls:getParent ()
+  return self.parent
 end
 
 --- Returns whether the channel is active.

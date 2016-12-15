@@ -35,6 +35,7 @@ function cls:__init (chcount, cls, ...)
   self.chmap = {}
   for i = 1, chcount do
     local ch = cls(i, ...)
+    ch.parent = self
     if i == 1 then ch:setActive(true) end
     self.channel[i] = ch
     self.chmap[i] = i <= 9 and tostring(i) or

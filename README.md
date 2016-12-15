@@ -6,9 +6,9 @@ MGCInts is licensed under Mozilla Public License Version 2.0.
 
 ### Caution
 
-MGCInts is in very early development stage. There might be backward-incompatible changes to the API even if the MML engines are usable in limited contexts. See `STATUS.md` for details.
+MGCInts is in very early development stage. Backward-incompatible changes to the API might occur even if the MML engines remain usable in limited contexts.
 
-Also, the compiler does not back up your files right now, nor support non-destructive data insertion. Your music data might corrupt other tracks or even other parts of your output file; however, a properly made engine will guarantee that the written data only affects existing music data.
+Also, the compiler does not back up the output files right now, nor support non-destructive data insertion. Your music data might corrupt other tracks or even other parts of your output file; however, the ones listed in `STATUS.md` will guarantee that the written data only affects existing music data.
 
 ### Features
 
@@ -27,10 +27,9 @@ Also, the compiler does not back up your files right now, nor support non-destru
 
 - Download the entire folder or clone the repository;
 - Add the `bin` directory to `$PATH`;
-- Add the `src` directory to `$LUA_PATH`;
 - Add the root directory to `$MGCINTS_PATH`.
 
-As this framework becomes more complete, automatic installation will be available via LuaRocks.
+This framework will be later accessible remotely from LuaRocks.
 
 ### Synopsis
 
@@ -60,8 +59,11 @@ Below is the structure of this repository:
 - `CONTRIB.md`: Guidelines for submitting sound engines
 - `CHANGES.md`: Change log
 - `COPYING`: The software license (MPL-2.0)
+- `mgcints-scm-1.rockspec`: LuaRocks specification
 - `bin/`: System-dependent launchers
 - `doc/`: LDoc-generated guide and manual
+- `etc/`: Miscellaneous files
+- `include/`: Common MML files for sound drivers
 - `mml/`: Example MML songs
 - `src/mgcints/`: The framework source scripts
   - `default/`: Default object definitions

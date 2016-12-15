@@ -5,7 +5,7 @@ local SRCDIR = {folder = "mgcints",
     "init", "lexers", "macros", "symbols",
   },
   {folder = "engine",
-    "cv1"
+    "cv1", "mm3",
   },
   {folder = "mml",
     "init", "macrotable", "parser", "ppcontext",

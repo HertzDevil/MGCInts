@@ -1,14 +1,5 @@
 makedoc.sh
 *.bin
-*.nes
-*.nsf
-*.sfc
-*.smc
-*.fig
-*.spc
-*.gb
-*.gbc
-*.gbs
 *.unused
 doc/html/
 usr/
