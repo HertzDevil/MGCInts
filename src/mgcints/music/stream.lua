@@ -24,12 +24,16 @@ local Class = require "mgcints.util.class"
 --- Stream initializer.
 --
 -- Every new stream contains a label at the beginning called "START".
-function cls:__init ()
+-- @param ... Chunks that are inserted on initialization.
+function cls:__init (...)
   self.data = {}
   self.size = 0
   self.label = {}
   self.baseadr = 0
   self:addLabel "START"
+  for _, s in ipairs {...} do
+    self:push(s)
+  end
 end
 
 --- Inserts a chunk into the stream.

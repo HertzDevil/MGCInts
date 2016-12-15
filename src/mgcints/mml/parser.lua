@@ -17,6 +17,7 @@ local yield = coroutine.yield
 local car_cdr = require "mgcints.util.misc".car_cdr
 local instanceof = require "mgcints.util.class".instanceof
 
+local Symbol = require "mgcints.default.symbols"
 local MacroTable = require "mgcints.mml.macrotable"
 local Ex = require "mgcints.util.exception"
 local SyntaxEx = Ex.typed "SyntaxError"
@@ -87,7 +88,8 @@ function cls:readDirective (sv)
     local suc, results = car_cdr(pcall(cmd.getParams, cmd, sv))
     if suc then
       sv:ws() -- consume the rest of the line
-      assert(sv:len() == 0, "Trailing text after preprocessor directive")
+      local c = sv:trim(Symbol.SINGLECOMMENT, true)
+      assert(c or sv:len() == 0, "Trailing text after preprocessor directive")
       return cmd, results()
     end
     local e = results()

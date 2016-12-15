@@ -11,8 +11,6 @@ local require = require
 require "mgcints.util.stringfuncs"
 
 local Default = require "mgcints.default"
-local Class = require "mgcints.util.class"
-local Engine = require "mgcints.music.engine"
 local StringView = require "mgcints.util.stringview"
 local Ex = require "mgcints.util.exception"
 local Runtime = Ex.typed "RuntimeError"
