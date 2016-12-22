@@ -75,7 +75,8 @@ end
 -- both named methods and metamethods; this function reassigns metamethods to
 -- the instance metatable appropriately. Its metatable will be overwritten after
 -- a call to this function.
--- @tparam[opt] table base The base class object.
+-- @tparam[opt] table base The base class object, or @{util.Class.Universal} if
+-- not given.
 -- @return A class object. This object itself is not an instance of any other
 -- class.
 class.make = function (methods, base)
@@ -89,6 +90,7 @@ class.make = function (methods, base)
     end
   end
   
+  base = base or class.Universal
   if base then
     cls.__base = base
     local bmt = rawget(base, "__mt")
@@ -166,13 +168,21 @@ end
 
 --- Obtains a free function equivalent of an instance method.
 -- @static
--- @param t Instance.
+-- @param t Instance object.
 -- @tparam string name The method name.
 -- @treturn func A function which calls method `name` of `t` with all arguments 
 -- as method parameters.
 class.method = function (t, name)
   return function (...) return t[name](t, ...) end
 end
+
+--- The common base class of all instances.
+-- It has the following methods: @{instanceof}, @{method}.
+-- @field Universal
+class.Universal = class.make {
+  instanceof = class.instanceof,
+  method = class.method,
+}
 
 setmetatable(class, {
   __call = function (_, ...) return class.make(...) end,

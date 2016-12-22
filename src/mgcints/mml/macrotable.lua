@@ -17,6 +17,8 @@ function cls:__init ()
 end
 
 --- Adds a command to the table.
+--
+-- Commands of the same name are scanned in the order they were added.
 -- @tparam string name The MML command name.
 -- @tparam MML.Command cmd The command object.
 function cls:addCommand (name, cmd)
@@ -24,6 +26,22 @@ function cls:addCommand (name, cmd)
     self.commands:add(name, {})
   end
   insert(self.commands:get(name), cmd)
+end
+
+--- Renames an MML command.
+-- @tparam string old The old command name.
+-- @tparam string new The new command name.
+function cls:renameCommand (old, new)
+  self.commands:add(new, self.commands:remove(old))
+end
+
+--- Obtains a command definition.
+-- @tparam string name The MML command name.
+-- @tparam[opt=1] int pos The command position.
+-- @treturn ?class The requested @{MML.Command} class if it exists.
+function cls:getCommand (name, pos)
+  local t = self.commands:get(name)
+  return t and t[pos or 1] or nil
 end
 
 --- Reads the next command from an MML string.
