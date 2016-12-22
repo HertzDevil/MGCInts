@@ -6,7 +6,7 @@ local require = require
 local pairs = pairs
 local ipairs = ipairs
 local insert = table.insert
-local assert = require "mgcints.default.errors".ParamCheck
+local ParamAssert = require "mgcints.default.errors".ParamCheck
 
 local SYMBOL = require "mgcints.default.symbols"
 local Class = require "mgcints.util.class"
@@ -37,19 +37,15 @@ local create; do
   }, Cmd)
   local MULTI_COMMENT = Builder:param(function (sv)
     local b, e = sv:find(SYMBOL.MULTICOMMENT_END, 1, true)
-    sv:advance(assert(e))
+    sv:advance(ParamAssert(e))
   end):make()
 create = function ()
   local macrostr = Trie()
+  local patternstr = Trie()
   
-  local mtable = MacroTable()
-  mtable:addCommand(SYMBOL.RAW_INSERT, RAW)
-  mtable:addCommand(SYMBOL.CHANNELSELECT, CHANNEL)
-  mtable:addCommand(SYMBOL.SINGLECOMMENT, COMMENT)
-  mtable:addCommand(SYMBOL.MULTICOMMENT_BEGIN, MULTI_COMMENT)
-  mtable:addCommand(SYMBOL.MACRODEFINE, Class({
+  local MacroDefineCmd = Class({
     getParams = function (self, sv)
-      local name = assert(Lexer.Ident(sv))
+      local name = ParamAssert(Lexer.Ident(sv))
       sv:trim "[ \t]*,?[ \t]*" -- do not trim newlines
       return name, sv:trim "[^\n]*"
     end,
@@ -61,11 +57,11 @@ create = function ()
       end
       macrostr:add(name, cmdlist)
     end,
-  }, Cmd))
-  mtable:addCommand(SYMBOL.MACROINVOKE, Class({
+  }, Cmd)
+  local MacroInvokeCmd = Class({
     getParams = function (self, sv)
       local k, list = macrostr:lookup(sv)
-      assert(k, "Unknown macro name")
+      ParamAssert(k, "Unknown macro name")
       sv:advance(#k)
       return list
     end,
@@ -75,7 +71,31 @@ create = function ()
         cmd:apply(song, params())
       end
     end,
-  }, Cmd))
+  }, Cmd)
+  local PatternDefineCmd = Builder:setSongHandler(function (song, id)
+    song:setPseudoCh(id)
+    patternstr:add(id)
+  end):param "Ident":make()
+  local PatternInvokeCmd = Builder:param(function (sv)
+    local k = patternstr:lookup(sv)
+    if k then
+      sv:advance(#k)
+      return k
+    end
+    local id = Lexer.Ident(sv)
+    patternstr:add(id)
+    return id
+  end):make()
+  
+  local mtable = MacroTable()
+  mtable:addCommand(SYMBOL.RAW_INSERT, RAW)
+  mtable:addCommand(SYMBOL.CHANNELSELECT, CHANNEL)
+  mtable:addCommand(SYMBOL.SINGLECOMMENT, COMMENT)
+  mtable:addCommand(SYMBOL.MULTICOMMENT_BEGIN, MULTI_COMMENT)
+  mtable:addCommand(SYMBOL.MACRODEFINE, MacroDefineCmd)
+  mtable:addCommand(SYMBOL.MACROINVOKE, MacroInvokeCmd)
+  mtable:addCommand(SYMBOL.PATTERNDEFINE, PatternDefineCmd)
+  mtable:addCommand(SYMBOL.PATTERNINVOKE, PatternInvokeCmd)
   return mtable
 end; end
 

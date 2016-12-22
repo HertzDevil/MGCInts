@@ -30,7 +30,7 @@ DEFAULT.Errors = require "mgcints.default.errors"
 -- @field SINGLECOMMENT The macro for single-line comments, default `";"`;
 -- @field MULTICOMMENT_BEGIN The macro for starting multi-line comments, default
 -- `"/*"`;
--- @field MULTICOMMENT_END The macro for finishing multi-line comments, default 
+-- @field MULTICOMMENT_END The macro for finishing multi-line comments, default
 -- `"*/"`;
 -- @field CHANNELSELECT The macro for selecting active channels, default `"!"`;
 -- @field DIRECTIVE_PREFIX The symbol that all preprocessor directives begin
@@ -39,10 +39,9 @@ DEFAULT.Errors = require "mgcints.default.errors"
 -- `"$$"`;
 -- @field MACROINVOKE The macro for invoking MML substitution macros, default
 -- `"$"`;
--- @field PATTERNDEFINE (unused) The macro for defining pattern chunks, default
--- `"$<"`;
--- @field PATTERNINVOKE (unused) The macro for invoking pattern chunks, default
--- `"$>"`.
+-- @field PATTERNDEFINE The macro for defining pattern channels, default `"$<"`;
+-- @field PATTERNINVOKE The macro for invoking pattern channels, default `"$>"`
+-- (this command has a null action and must be overridden manually).
 -- @table Symbols
 DEFAULT.Symbols = require "mgcints.default.symbols"
 
