@@ -22,7 +22,7 @@ function cls:__classinit ()
 end
 
 --- Channel initializer.
--- @tparam int id Channel index.
+-- @tparam int id Channel index. For pseudo-channel objects this is always 0.
 -- @param ... Extra engine-dependent parameters.
 function cls:__init (id, ...)
   self.id = id

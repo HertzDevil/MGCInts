@@ -20,8 +20,9 @@ local Lexer = require "mgcints.default.lexers"
 local create; do
   local RAW = Builder:setHandler(function (ch, ...)
     ch:addChunk(...)
-  end):param "Uint8":variadic():make()
+  end):param "Uint8":param "Uint8":variadic():make()
   local CHANNEL = Builder:setSongHandler(function (song, t)
+    song:setPseudoCh(nil)
     song:doAll(function (ch)
       ch:setActive(false)
     end)
@@ -34,12 +35,10 @@ local create; do
       sv:trim "[^\r\n]*"
     end,
   }, Cmd)
-  local MULTI_COMMENT = Class({
-    getParams = function (self, sv)
-      local b, e = sv:find(SYMBOL.MULTICOMMENT_END, 1, true)
-      sv:advance(assert(e))
-    end,
-  }, Cmd)
+  local MULTI_COMMENT = Builder:param(function (sv)
+    local b, e = sv:find(SYMBOL.MULTICOMMENT_END, 1, true)
+    sv:advance(assert(e))
+  end):make()
 create = function ()
   local macrostr = Trie()
   
@@ -62,7 +61,7 @@ create = function ()
       end
       macrostr:add(name, cmdlist)
     end,
-  }, Cmd)())
+  }, Cmd))
   mtable:addCommand(SYMBOL.MACROINVOKE, Class({
     getParams = function (self, sv)
       local k, list = macrostr:lookup(sv)
@@ -76,7 +75,7 @@ create = function ()
         cmd:apply(song, params())
       end
     end,
-  }, Cmd)())
+  }, Cmd))
   return mtable
 end; end
 

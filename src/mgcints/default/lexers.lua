@@ -171,22 +171,19 @@ end
 
 --- Matches a key signature.
 --
--- A key signature consists of an accidental sign (`+` / `-` / `=`) followed by
--- any number of note names (defualt `a` to `g`, case-insensitive).
+-- A key signature consists of an accidental sign, followed by any number of
+-- note names (defualt `a` to `g`, case-insensitive).
 -- @tparam util.StringView sv String view object.
 -- @treturn table A set with lowercase note names as keys and the corresponding
 -- transpose amount of the accidental sign as the value for all keys.
--- @function Lexer.KeySig
-do
-  local ACCIDENTAL = {["+"] = 1, ["-"] = -1, ["="] = 0}
 Lexer.KeySig = function (sv)
-  local sign = ACCIDENTAL[tostring(assert(sv:trim "[=+-]"))]
+  local sign = assert(Lexer.Acc(sv)).shift
   local t = {}
   for ch in assert(sv:trim "[A-Ga-g]+"):gmatch "." do
     t[ch:lower()] = sign
   end
   return t
-end; end
+end
 
 --- Matches an accidental sign.
 --

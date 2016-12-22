@@ -7,6 +7,8 @@
 -- @alias cls
 local cls = {}
 
+local _chclass = setmetatable({}, {__mode = "k"})
+
 local require = require
 local char = string.char
 local insert = table.insert
@@ -32,7 +34,9 @@ function cls:__init (chcount, cls, ...)
   assert(Class.subclassof(cls, require "mgcints.music.channel"),
          "Invalid channel class object")
   self.channel = {}
+  self.pseudoch = {}
   self.chmap = {}
+  _chclass[self] = cls
   for i = 1, chcount do
     local ch = cls(i, ...)
     ch.parent = self
@@ -43,6 +47,7 @@ function cls:__init (chcount, cls, ...)
                     i <= 61 and char(0x3D + i) or nil
   end
   self.thisch = nil
+  self.activepseudo = nil
   self.engine = nil
   self.ppcontext = Cxt()
 end
@@ -74,6 +79,43 @@ function cls:getChannel (id)
   return assert(self.channel[id], "Invalid channel index")
 end
 
+--- Accesses a pseudo-channel, creating one if it does not exist.
+-- @param id An identifier.
+-- @treturn Music.Channel The requested pseudo-channel.
+function cls:getPseudoCh (id)
+  if not self.pseudoch[id] then
+    self.pseudoch[id] = self:createPseudoCh()
+  end
+  return self.pseudoch[id]
+end
+
+--- Creates a new pseudo-channel.
+-- @param ... Extra parameters passed to the @{Music.Channel} constructor.
+-- @treturn Music.Channel The requested pseudo-channel.
+function cls:createPseudoCh (...)
+  local ch = _chclass[self](0, ...)
+  ch.parent = self
+  ch:beforeDefault()
+  return ch
+end
+
+--- Makes a pseudo-channel active.
+-- If no parameters are given, restores the existing active channels.
+-- @param[opt] id Pseudo-channel identifier.
+function cls:setPseudoCh (id)
+  if id then
+    self.activepseudo = self:getPseudoCh(id)
+  else
+    self.activepseudo = nil
+  end
+end
+
+--- Iterates through the song's pseudo-channels.
+-- @return @{pairs} applied to the pseudo-channel table.
+function cls:pseudoChannels ()
+  return pairs(self.pseudoch)
+end
+
 --- Changes the channel identifier for a channel.
 -- @tparam int id Channel index starting from 1.
 -- @tparam string name Channel identifier, must be a single character.
@@ -84,8 +126,11 @@ end
 
 --- Accesses the song's current channel.
 -- @tparam[opt] string|int index The new current channel index or identifier.
--- @treturn Music.Channel The current channel.
+-- @treturn Music.Channel The current channel or pseudo-channel.
 function cls:current (...)
+  if self.activepseudo then
+    return self.activepseudo
+  end
   if select("#", ...) > 0 then
     self.thisch = self:getChannel((...))
   end
@@ -108,11 +153,16 @@ function cls:doAll (f, ...)
 end
 
 --- Applies a function to all active channels.
+-- If an active pseudo-channel is specified, applies the function to that
+-- instead.
 -- @tparam func f A function which accepts a @{Music.Channel} object as its sole
 -- argument.
 -- @param ... Extra arguments which are passed to `f`.
 -- @local
 function cls:doActive (f, ...)
+  if self.activepseudo then
+    f(self.activepseudo, ...); return
+  end
   for _, v in ipairs(self.channel) do if v:isActive() then
     f(v, ...)
   end end
@@ -150,6 +200,9 @@ end
 function cls:afterDefault ()
   -- do nothing right now
   self:doAll(function (ch) ch:afterDefault() end)
+  for _, ch in self:pseudoChannels() do
+    ch:afterDefault()
+  end
   assert(not self.after, "Music.Song:after is deprecated")
   for _, v in ipairs(self.__class.cb.post) do
     v(self)
