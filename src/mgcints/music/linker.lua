@@ -13,6 +13,9 @@ local ipairs = ipairs
 local setmetatable = setmetatable
 local Check = require "mgcints.default.errors".RuntimeCheck
 
+local Class = require "mgcints.util.class"
+local Stream = require "mgcints.music.stream"
+
 -- properties
 local _pos = setmetatable({}, {__mode = "k"})
 local _offsetdelta = setmetatable({}, {__mode = "k"})
@@ -68,6 +71,7 @@ end
 -- @raise Throws an error if any part of the stream lies in a protected range.
 -- The range must be writable at the time this method is called.
 function cls:addStream (s)
+  Check(Class.instanceof(s, Stream), "Not a stream object")
   s:setBase(_pos[self] + _offsetdelta[self])
   local size = s:getSize()
   if isProtected(self, _pos[self], _pos[self] + size - 1) then
@@ -104,12 +108,20 @@ end
 -- linker.
 -- @tparam file fn File handle with write access.
 function cls:flush (fn)
+  local writes = {}
   for _, v in ipairs(_blocks[self]) do
-    fn:seek("set", v.pos)
-    for _, s in ipairs(v) do fn:write(s:build()) end
+    local bin = {}
+    for _, s in ipairs(v) do insert(bin, s:build()) end
+    insert(writes, {v.pos, table.concat(bin)})
   end
   _currentblock[self] = nil
   _blocks[self] = {}
+  
+  -- now only file i/o errors could happen
+  for _, v in ipairs(writes) do
+    fn:seek("set", v[1])
+    fn:write(v[2])
+  end
 end
 
 return require "mgcints.util.class" (cls)
