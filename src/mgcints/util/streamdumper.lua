@@ -100,7 +100,7 @@ end
 function cls:add (cmd, ...)
   if type(cmd) == "number" then cmd = string.char(cmd) end
   assert(not self.argparse[cmd], "Duplicate command")
-  
+
   local t = {}
   local kind = {...}
   self.argparse[cmd] = {}
@@ -121,7 +121,7 @@ function cls:add (cmd, ...)
     end
     i = i + 1
   end
-  
+
   if not self.lastcmdname then
     self.lastcmdname = "`0h"
     for _, v in ipairs {cmd:byte(1, -1)} do
@@ -266,7 +266,7 @@ function cls:makeGrammar ()
     insert(t, {name, self.argparse[cmd], cmd})
   end
   sort(t, function (x, y) return x[1] < y[1] end)
-  
+
   local out = {header}
   for _, v in ipairs(t) do
     local as, fs, ps = {"ch"}, {("0x%02X"):format(v[3]:byte())}, {}
@@ -280,11 +280,11 @@ function cls:makeGrammar ()
       insert(ps, ":param" .. (ARGFUNC_REV[f] or "(function () end)"))
       i = i + 1
     end
-    
+
     insert(out, fmt:format(
       concat(as, ", "), concat(fs, ", "), concat(ps), v[1]))
   end
-  
+
   insert(out, footer)
   return concat(out, '\n')
 end; end

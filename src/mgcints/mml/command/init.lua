@@ -37,7 +37,7 @@ end
 function cls:apply (song, ...)
   -- apply command to song first
   self:applySong(song, ...)
-  
+
   -- apply command to all active channels next
   song:doActive(function (ch, ...)
     self:applyChannel(song:current(ch:getID()), ...)

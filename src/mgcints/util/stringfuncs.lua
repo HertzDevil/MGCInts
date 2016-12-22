@@ -67,7 +67,7 @@ string_mt.tokenize = function (s, pattern, init, plain)
   local last_init = nil
   local size = #s
   local final = false
-  
+
   local it = function ()
     local b, e = find(s, pattern, init, plain)
     if e == size then final = true end
@@ -83,14 +83,14 @@ string_mt.tokenize = function (s, pattern, init, plain)
     if init == last_init then error("Delimiter matched empty string", 2) end
     return tok
   end
-  
+
   return it, s
 end
 
 local readint_impl = function (s, size, big, signed, init)
   size = size or 1
   init = min(init or 1, #s + 1)
-  
+
   if string_mt.unpack then -- 5.3 or above
     s = s:sub(init, init + size - 1)
     local ml = #s
@@ -99,14 +99,14 @@ local readint_impl = function (s, size, big, signed, init)
       big and ">" or "<", signed and "i" or "I", size):unpack(s)
     return z, min(ml + 1, pos) + init - 1
   end
-  
+
   local val = {}
   for i = 1, size do
     val[i] = s:byte(init) or 0
     if init <= #s then init = init + 1 end
   end
   if signed then val[#val] = (val[#val] + 0x80) % 0x100 - 0x80 end
-  
+
   local z = 0
   if big then
     for i = 1, size do
@@ -117,7 +117,7 @@ local readint_impl = function (s, size, big, signed, init)
       z = z * 0x100 + val[i]
     end
   end
-  
+
   return z, init
 end
 

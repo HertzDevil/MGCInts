@@ -45,9 +45,9 @@ function cls:__init (defs)
   _finish[self] = defs.finish or function () end
   _setup[self] = defs.setup or function () end
   self.name = defs.name or "(Unnamed)"
-  
+
   self.features = {}
-  
+
   Validate(Class.subclassof(self.song, require "mgcints.music.song") and
            type(self.chcount) == "number" and
            Class.subclassof(self.channel, require "mgcints.music.channel") and

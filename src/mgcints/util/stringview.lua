@@ -46,7 +46,7 @@ local findresults = function (sv, pattern, init, plain)
   if not init then init = 1 end
   if not plain then plain = false end
   local b, e = translate_sub(sv, init)
-  
+
   local result = {sv.str:find(pattern, b, plain)}
   if not result[1] then return nil end
   if result[2] > e then return nil end

@@ -26,7 +26,7 @@ end
 function cls:__tostring ()
   -- trace string is not genearted until this is called
   if self.trace ~= "" then return self.trace end
-  
+
   -- obtain row / column / current line
   local _b = self.sv:seek()
   local pre = Sv(self.sv:getfull():sub(1, _b - 1))
@@ -36,7 +36,7 @@ function cls:__tostring ()
   self.sv:seek(pre:seek())
   local line = self.sv:trim "[^\n]*"
   self.sv:seek(_b)
-  
+
   -- trim displayed line
   local EXTRA_CHARS = 10
   local abbrcolumn = column
@@ -47,14 +47,14 @@ function cls:__tostring ()
     line = "... " .. line:sub(column - EXTRA_CHARS)
     abbrcolumn = EXTRA_CHARS + 5
   end
-  
+
   -- generate cursor
   local cursorline = line:sub(1, abbrcolumn - 1):gsub("[^\t]", " ")
-  
+
   -- make the trace string
   self.trace = ("%s\nNear row %d, column %d\n%s\n%s^"):format(
     self.what, row, column, line, cursorline)
-  
+
   return self.trace
 end
 

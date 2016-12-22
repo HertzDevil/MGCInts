@@ -27,33 +27,33 @@ function cls.preprocess (song, input)
   local engine = assert(song:getEngine(),
     "Song object not associated with music engine")
   local parser = engine:getParser()
-  
+
   -- ignore shebang
   input = input:gsub("^#!.-\n", Default.Symbols.SINGLECOMMENT .. "\n")
-  
+
   -- set up preprocessor context
   local cxt = song:getPPContext()
-  
+
   -- get the directive symbol
   local dirsym = Default.Symbols.DIRECTIVE_PREFIX
-  
+
   -- iterate through all lines
   for line in input:tokenize "[\r\n]" do
     -- a preprocessor directive must start a line
     if line:find(dirsym, 1, true) == 1 then
       cxt:pushLine(line, true)
-      
+
       -- handle it immediately
       local sv = StringView(line)
       local nextCmd, params = car_cdr(parser:readDirective(sv))
-      
+
       -- apply command to song only, should not access active channels
       nextCmd:applySong(song, params())
     else
       cxt:pushLine(line, false)
     end
   end
-  
+
   return cxt:getMMLString()
 end
 
@@ -70,10 +70,10 @@ function cls.compile (song, input)
   local engine = assert(song:getEngine(),
     "Song object not associated with music engine")
   local parser = engine:getParser()
-  
+
   -- create a new string view from the preprocessed string
   local sv = StringView(input)
-  
+
   -- main processing loop
   for b, cmd, params in parser:loop(sv) do
     -- attach trace if necessary
@@ -112,7 +112,7 @@ function cls.processFile (engine, mml, rom, track)
   if type(mml) ~= "table" then mml = {mml} end
   if type(track) ~= "table" then track = {track} end
   assert(#mml == #track, "MML / track list mismatch")
-  
+
   for i, v in ipairs(track) do
     local song = engine:makeSong()
     local _mml = cls.preprocess(song, mml[i])

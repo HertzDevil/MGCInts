@@ -169,7 +169,7 @@ function cls:make (name, keep)
     insert(commands, cmd)
     if self.target and name then self.target:addCommand(name, cmd) end
   end
-  
+
   if self.isVariadic and #self.params > 0 then
     local orig = self.params[#self.params]
     self.params[#self.params] = function (sv)
@@ -190,14 +190,14 @@ function cls:make (name, keep)
       return vars()
     end
   end
-    
+
   local p = {unpack(self.params)}
   local count = #p
   local cmd = ParamCmd(unpack(p))
   cmd.applyChannel = self._handler or cmd.applyChannel
   cmd.applySong = self._songHandler or cmd.applySong
   addcmd(cmd)
-  
+
   for _, v in ipairs(self.optionorder) do
     p[v] = nil
     local used, unused = {}, {}
@@ -208,13 +208,13 @@ function cls:make (name, keep)
         unused[i] = true
       end
     end
-    
+
     local cmd = ParamCmd(unpack(used))
     cmd.applyChannel = self._handler or cmd.applyChannel
     cmd.applySong = self._songHandler or cmd.applySong
     local defaults = self.defaults -- closure
     local params = self.params -- closure
-    
+
     function cmd:getParams (sv)
       local results = {ParamCmd.getParams(self, sv)}
       local pos = 1
@@ -237,7 +237,7 @@ function cls:make (name, keep)
     end
     addcmd(cmd)
   end
-  
+
   if not keep then self:reset() end
   return unpack(commands)
 end

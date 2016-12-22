@@ -45,14 +45,14 @@ function cls:readCommand (sv)
   sv:ws()
   -- end of string reached, finish
   if sv:len() == 0 then return end
-  
+
   -- get the command table with the given name
   local b_old = sv:seek()
   local ft = self.macros:readNext(sv)
   if not ft then
     Trace(sv, SyntaxEx "Unknown command"):throw()
   end
-  
+
   -- find first legal interpretation of the command
   -- ParamError in lexer function signals failure
   local b = sv:seek()
@@ -80,7 +80,7 @@ function cls:readDirective (sv)
   if not ft then
     Trace(sv, SyntaxEx "Unknown preprocessor directive"):throw()
   end
-  
+
   -- find first legal interpretation of the command
   -- ParamError in lexer function signals failure
   local b = sv:seek()
@@ -112,16 +112,16 @@ function cls:loop (sv)
     while true do
       -- consume whitespace
       sv:ws()
-      
+
       -- save string view position
       local b = sv:seek()
-      
+
       -- obtain the next command with all parameters it accepts
       local nextCmd, params, count = car_cdr(self:readCommand(sv))
-      
+
       -- end of string, no more commands remaining
       if nextCmd == nil and count == 0 then break end
-      
+
       -- return results
       yield(b, nextCmd, params)
     end

@@ -116,7 +116,7 @@ function cls:flush (fn)
   end
   _currentblock[self] = nil
   _blocks[self] = {}
-  
+
   -- now only file i/o errors could happen
   for _, v in ipairs(writes) do
     fn:seek("set", v[1])

@@ -183,7 +183,7 @@ function cls:beforeDefault ()
     t[v] = i
   end
   self.chmap = t
-  
+
   assert(not self.before, "Music.Song:before is deprecated")
   for _, v in ipairs(self.__class.cb.pre) do
     v(self)

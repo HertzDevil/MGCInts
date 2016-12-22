@@ -41,11 +41,11 @@ local _ptr = setmetatable({}, {__mode = "k"})
 function cls:__init (fname)
   local f = io.open(fname, "rb")
   Check(f and f:read(6) == "NESM\x1A\x01", "Invalid NSF file")
-  
+
   _ptr[self] = 0x8000
   f:seek("set", 0)
   _RAW[self] = f:read "*a"
-  
+
   f:seek("set", 0)
   local header = f:read(0x80)
   _SONGS[self] = (header:readint(0x07) - 1) % 0x100 + 1
@@ -61,7 +61,7 @@ function cls:__init (fname)
   _REGION[self] = region % 0x02 ~= 0 and "PAL" or "NTSC"
   _DUAL[self] = floor(region / 0x02) % 0x02 ~= 0
   _CHIP[self] = header:readint(0x7C)
-  
+
   _BANK[self] = {}
   local switch = false
   for i = 8, 15 do
@@ -81,7 +81,7 @@ function cls:__init (fname)
     _BANK[self][6] = _BANK[self][14]
     _BANK[self][7] = _BANK[self][15]
   end
-  
+
   local d = {}
   local bsize = 0x1000 - _LOAD[self] % 0x1000
   while true do
@@ -95,7 +95,7 @@ function cls:__init (fname)
     insert(d, str)
   end
   _DATA[self] = d
-  
+
   f:close()
 end
 

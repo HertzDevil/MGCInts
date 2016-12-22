@@ -211,7 +211,7 @@ findEngine = function (name)
   if fn then
     return dofile(fn)
   end
-  
+
   local suc, m = pcall(require, md)
   if suc then
     return m

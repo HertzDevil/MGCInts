@@ -222,13 +222,13 @@ engine:setupEngine(function (self, rom)
       Check(false, "V.S. System mapper detected")
     end
   end
-  
+
   rom:seek("set", 0x8185 - bias)
   local tablebase = rom:read(2):readint(1, 2)
   link:writable(tablebase - delta, tablebase - delta + 0x116)
   link:writable(0x88B6 - bias, 0xB500 - bias)
   link:setDelta(delta)
-  
+
   self.link = link
   self.delta = delta
   self.tablebase = tablebase
@@ -237,9 +237,9 @@ end)
 engine:setInserter(function (self, rom, song, track)
   local tindex = 0x27 + (track - 1) * 3
   local songbase = self.tablebase + tindex * 3
-  
+
   local link = self.link
-  
+
   local header = Music.Stream()
   header:push(0x80)
   header:push(Pointer(song:getChannel(1):getStream(), "START"))
@@ -249,7 +249,7 @@ engine:setInserter(function (self, rom, song, track)
   header:push(Pointer(song:getChannel(3):getStream(), "START"))
   link:setPos(link:seekDelta(rom, songbase))
   link:addStream(header)
-  
+
   local base = rom:read(3):readint(2, 2) -- skip first byte
   link:setPos(link:seekDelta(rom, base))
   song:doAll(function (ch)

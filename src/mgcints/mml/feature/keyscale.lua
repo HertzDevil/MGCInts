@@ -30,7 +30,7 @@ function cls.getCommandType (cself, ident)
 end
 
 function cls.register (cself, engine, cmdname, mname, kdef)
-  
+
   cself.__base.register(cself, engine, cmdname, mname)
 end
 

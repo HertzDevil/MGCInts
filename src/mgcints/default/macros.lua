@@ -42,7 +42,7 @@ local create; do
 create = function ()
   local macrostr = Trie()
   local patternstr = Trie()
-  
+
   local MacroDefineCmd = Class({
     getParams = function (self, sv)
       local name = ParamAssert(Lexer.Ident(sv))
@@ -86,7 +86,7 @@ create = function ()
     patternstr:add(id)
     return id
   end):make()
-  
+
   local mtable = MacroTable()
   mtable:addCommand(SYMBOL.RAW_INSERT, RAW)
   mtable:addCommand(SYMBOL.CHANNELSELECT, CHANNEL)

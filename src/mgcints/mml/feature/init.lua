@@ -115,7 +115,7 @@ function cls.register (cself, engine, cmdname, mname)
   local chcls = engine:getChannelClass()
   chcls:beforeCallback(cls:getCallback("channel", "before"))
   chcls:afterCallback(cls:getCallback("channel", "after"))
-  
+
   local m = engine:getCommandTable()
   for v in cself:identifiers() do
     local cmd = Check(cself:getCommandType(v), "Missing command in feature")
@@ -126,7 +126,7 @@ function cls.register (cself, engine, cmdname, mname)
       m:addCommand(name, cmd)
     end
   end
-  
+
   for k, v in pairs(cself:songMethods()) do
     songcls.__mt.__index[mname[k] or k] = v
   end

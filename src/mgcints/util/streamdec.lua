@@ -64,7 +64,7 @@ function cls:readStream (str, init)
     local k, cmd = self.cmdtable:lookup(sv)
     if not k then return nil end
     sv:advance(#k)
-    
+
     if sv:seek() + cmd.argcount > #sv:getfull() + 1 then return nil end
     if cmd.term then self.suc = true end
     local params = {sv:byte(1, cmd.argcount)}

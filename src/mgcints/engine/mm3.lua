@@ -184,7 +184,7 @@ end
 function ChannelDefs:flushNote (force)
   if force then self.tying = false end
   if self.tying or self:isMuted() then return end
-  
+
   if self.notestream.tie then
     self:addChunk(0x01)
   end
@@ -380,13 +380,13 @@ end):param "Uint8":param "Uint8":param "Uint8":param "Uint8":param "Uint8"
 engine:setupEngine(function (self, rom)
   local link = Music.Linker()
   self.link = link
-  
+
   self.base = 0x8A41
   rom:seek("set", 0x08)
   local delta = rom:read(2):readint(1, 2) - 0x80 -- NSF
   link:setDelta(delta)
   link:writable(self.base - delta, 0xFFFF - delta)
-  
+
   self.instruments = {}
   link:seekDelta(rom, self.base)
   link:seekDelta(rom, (rom:read(2):readint_b(1, 2)))

@@ -25,7 +25,7 @@ This program is licensed under Mozilla Public License Version 2.0.]]
 local getargs; do
   local ipairs = ipairs
   local unpack = table.unpack or unpack
-  
+
   if has_argparse then
     local p = argparse():epilog(notice)
       :name "mgcfront"
@@ -96,7 +96,7 @@ Compiles a single MML file.]]
       info:error "not implemented"
     end)
 ]]
-  
+
     getargs = function (t)
       return p:parse(t)
     end
@@ -121,7 +121,7 @@ local main = Ex.try(function (arg)
   os.setlocale "C"
   local Warning = require "mgcints.util.warning"
   local findEngine = require "mgcints.util.misc".findEngine
-  
+
   if not has_argparse then
     Warning.warn "Module 'argparse' not installed"
     for _, v in ipairs(arg) do if v == "--help" then
@@ -131,7 +131,7 @@ local main = Ex.try(function (arg)
     end end
   end
   arg = getargs(arg)
-  
+
 --  local Profiler = require "mgcints.util.globalprofiler" ()
 --  Profiler:enter "pre"
   local Default = require "mgcints.default"
@@ -147,7 +147,7 @@ local main = Ex.try(function (arg)
     Check(open(arg.input .. ".out", "r+b"), "Bad output filename") or io.stdout
   local track = arg.track
   local mmlstr = f:read "*a"
-  
+
   if mmlstr:find "[^\001-\127]" then
     Warning.warn "Input MML file contains non-ASCII characters"
   end
@@ -156,7 +156,7 @@ local main = Ex.try(function (arg)
   Compiler.processFile(engine, mmlstr, rom, track)
   f:close()
   rom:close()
-  
+
   io.stdout:write "Finished.\n"
   return 0
 end,

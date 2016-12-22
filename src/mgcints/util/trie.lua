@@ -85,7 +85,7 @@ function cls:lookup (str, init)
   local x = init - 1
   local longest, val
   self = self.data
-  
+
   repeat
     if self[true] ~= nil then
       longest, val = str:sub(init, x), self[true]

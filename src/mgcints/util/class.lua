@@ -35,9 +35,9 @@ local construct = function (self, ...)
 end
 
 ---The class builder function.
--- 
+--
 -- All classes have the following properties:
--- 
+--
 -- - The `__mt` field contains the generated metatable used by all instances of
 -- this class.
 -- - The `__new` field contains the constructor function. This is a static
@@ -56,9 +56,9 @@ end
 -- - If `__classinit` is found, then it will be called using the class object as
 -- the only argument before returning. The initializer of the superclass may be
 -- manually called using `self.__base.__classinit(self)`.
--- 
+--
 -- All instances of classes have the following properties:
--- 
+--
 -- - All instance methods declared in this class or any of its superclasses will
 -- be available.
 -- - During the creation of an instance, the `__init` _instance_ method will be
@@ -70,7 +70,7 @@ end
 -- - If `base` is given, the `__super` field will contain this base class. In
 -- particular, the initializer of an instance's superclass may be referred to as
 -- `self.__super.__init(self, ...)`.
--- 
+--
 -- @tparam table methods A table containing instance methods. It may contain
 -- both named methods and metamethods; this function reassigns metamethods to
 -- the instance metatable appropriately. Its metatable will be overwritten after
@@ -81,7 +81,7 @@ end
 -- class.
 class.make = function (methods, base)
   local cls = {__mt = {__index = {}}}
-  
+
   for k, v in next, methods do
     if metaSet[k] then
       cls.__mt[k] = v
@@ -89,7 +89,7 @@ class.make = function (methods, base)
       cls.__mt.__index[k] = v
     end
   end
-  
+
   base = base or class.Universal
   if base then
     cls.__base = base
@@ -100,7 +100,7 @@ class.make = function (methods, base)
       if f then cls.__mt[k] = f end
     end end
   end
-  
+
   if not cls.__mt.__index.__init then -- this may find the base initializer
     cls.__mt.__index.__init = function () end
   end
@@ -113,7 +113,7 @@ class.make = function (methods, base)
   })
 
   --- @todo add a __copy static method
-  
+
   setmetatable(cls, {__call = construct, __index = cls.__mt.__index})
   if cls.__classinit then
     cls.__classinit(cls)
@@ -170,7 +170,7 @@ end
 -- @static
 -- @param t Instance object.
 -- @tparam string name The method name.
--- @treturn func A function which calls method `name` of `t` with all arguments 
+-- @treturn func A function which calls method `name` of `t` with all arguments
 -- as method parameters.
 class.method = function (t, name)
   return function (...) return t[name](t, ...) end
