@@ -1,0 +1,97 @@
+#!/usr/local/bin/mgcfront mm3
+
+#remap	3 T
+#remap	4 N
+
+; music is played identically but data is not the same
+
+;	ID  AR  DR  SL  RR  LFO  PMD  AMD RES NOI
+#inst	 0, 31,  1, 15, 24				; blank
+#inst	12, 31, 25,  5, 16,  30,  32,  38		; noise long
+#inst	18, 31, 23, 10,  4				; noise short
+#inst	20, 31, 29, 11, 12, 100,   5			; vib
+#inst	21, 26, 24,  9,  7,   0,   0,   0,  0		; fade-in
+#inst	26, 31, 23,  8,  6, 100,   2,  40		; trem sub
+#inst	29, 31, 29, 11, 12,   0,   0,   0,  0,  1	; lead
+
+!12T	k+fcgda		; G# Minor
+
+
+
+!1	T491 Q250 V10 @29 W2 O1 l16
+	gfgagabab>c<b>cdcdf
+
+!2	Q250 V12 @29 W3 O1 l16
+	edefefgfgagabab>d
+
+!T	Q200 @0 O2 l16
+	g8.f8.e8.c8.drfr
+
+!N	Q255 V12 @12 l16 <
+	b8.b8.b8.b8.gggg
+
+
+
+!12TN	/
+
+!1	[W1 @29 l4 O2
+		a.b.a^8b.a16r8.f16r8.
+		a.b.a^8b.a8 r8 f8 r8  e+2.@20^4x1
+	]2
+
+!2	O2 [@26 l4
+		f.g.f^8g.f8r8d8r8
+		f.g.f^8g.f8r8d8r8 @29 l16
+		r8grbr>cr cP30^d8P0 cr8<gr b8P30^>c8^<b8P0 a8g8.fr8g8
+	]2
+
+!T	[
+		gr8.g8.gg8gr8.gr r8grg8.gb8g 8b8>c8<
+		gr8.g8.gg8gr8.gr r8grg8.gg8d-8c8<b8>
+	]5
+
+!N	Q200 V10 [
+		e>ccr<g>cc<e>cc<e>c<gb>cd
+	]28
+
+
+
+!1	[V13 @18 Q200 l8
+		f16r.e+16r.d16r.c16rd16^8<g16r.g16r16gb>c4
+	:	d16r.c16r.<b16ra 16r Q250 f^4@20^2.
+	]2	>d16r.c16r. f16re+16r Q250 c^4@20^2.
+
+!2	[V8 @18 Q100 l16
+		r8grfr8.bfrgr4
+	]8
+
+;!T	gr8.g8.gg8gr8.gr r8grg8.gb8g 8b8>c8<
+;	gr8.g8.gg8gr8.gr r8grg8.gg8d-8c8<b8>
+;	gr8.g8.gg8gr8.gr r8grg8.gb8g 8b8>c8<
+;	gr8.g8.gg8gr8.gr r8grg8.gg8d-8c8<b8>
+
+
+
+!1	[@29 V12 l16
+		r8fr8frff8e+8
+	:	g4
+	]3	gr<b8^4@20^2.>
+	[@29
+		r8a=r8a=ra=a=8g8
+	:	b4
+	]3	br
+	a=ga=rgfgrfe=fre=de=rfg
+
+!2	[V12 @21 Q250
+		 g<ggrgr8gr8gr8gr8
+	]4
+	[
+		>b<bbrbr8b
+	:	r8br8br8
+	]4
+	@29 {b>cde+fgab+>cde+f}
+
+!T	>cr8.c8.<g b 8>cr8.cr r8crc8.cc8<f 8g 8 b 8
+	>cr8.c8.<g b 8>cr8.cr r8crc8.cc8<g=8f 8 e 8
+	 er8.e8.<b>d=8 er8.er r8ere8.ee8<a=8b 8>d=8
+	 er8.e8.<b>d=8 er8.er r8ere8.ee8<b-8a=8 g=8

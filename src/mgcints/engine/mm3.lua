@@ -157,6 +157,7 @@ end
 
 function ChannelDefs:addNote (n)
   self:flushNote()
+  if self:isMuted() then return end
   insert(self.notestream, Music.Stream(n))
   self.tying = false
 end
@@ -238,6 +239,7 @@ builder:setHandler(function (ch, t)
 end):param "KeySig":make "k"
 builder:setHandler(function (ch, x)
   CmdAssert(DUR_TO_BYTE[x], "Invalid default note duration")
+  ch:flushNote()
   ch.duration:set(x)
 end):param "Uint8":make "l"
 

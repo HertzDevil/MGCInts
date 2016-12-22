@@ -64,7 +64,7 @@ source = {
 build = {
   type = "builtin",
   modules = module_recurse(SRCDIR),
-  copy_directories = {"doc", "etc", "mml", "test"},
+  copy_directories = {"doc", "etc", "include", "mml", "test"},
   install = {
     bin = {mgcfront = "src/mgcfront.lua"},
   }
