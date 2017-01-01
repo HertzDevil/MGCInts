@@ -1,0 +1,179 @@
+#!/usr/local/bin/mgcfront silius
+
+#remap	3 T
+#remap	4 N
+#remap	5 D
+
+$$ALL	!12TND
+
+; 1:18 + 0:10
+
+
+
+@@V 8EB8	W2 5 6 6 10 11 12 11 10 9 8 7 7 7 7 7 7 / 1 5 4 3 2
+@@P 97FB	| 1 3 6 3 1 -1 -3 -6 -3 -1;
+@@V B242	W1 4 6 9 8 |-15 / 1 5 4 3 2 2;
+@@V B251	W0 4 6 9 8 |-15 / 1 5 4 3 2 2;
+@@V B260	W1 14 11 10 9 |-0 / 1 5 4 3 2 2;
+@@V B26F	W0 14 11 10 9 |-0 / 1 5 4 3 2 2;
+@@V B27E	W0 5 9 9 8 / 1 5 4 3 2 2;
+
+$$h8	e-%1c %9
+$$H8	a %1e-%9
+$$S8	a %1c %9
+$$h16	e-%1c %4
+$$H16	a %1e-%4
+$$S16	a %1c %4
+
+$<T03	T80 l80 o3     c+c c+
+$<T04	T80 l80 o3     c+c c+d
+$<K8	T80 l80 o2     d+d c+            r%7
+$<S8	T80 l80 o2 L%1 a g+g f+f e d+d c+r LX
+$<H8	T80 l80 o3 L%1 c+c<b a+a g+g f+f r LX
+$<H16	T80 l80 o3 L%1 c+c<b a+          r LX
+$<M8	T80 l80 o2 L%1 f e d+d c+c<b a+a r LX
+$<M16	T80 l80 o2 L%1 f e d+d           r LX
+$<L8	T80 l80 o2 L%1 c+c<b a+a g+g f+f r LX
+$<L16	T80 l80 o2 L%1 c+c<b a+          r LX
+
+$$R0	$>K8$>K8$>S8$>K8$>K8$>K8$>S8$>K8
+$$R1	$>H8$>H8$>M8$>L8 $>H16$>H16 r16 $>H16$>M16$>M16$>L8
+$$R2	$>H16$>H16$>M16$>L16 $>H16$>M16$>M16$>L16 $>T03$>T04$>T03$>H16$>H16$>M16$>M16$>L16$>L16
+
+
+
+$ALL	T80		; 180 BPM
+!12D	k-bea		; C Minor
+
+!N	@128
+	(R0)[a%1c%2 a%1c%3 a%1c%2]
+	[$S16]5 r16
+
+!T	@255 l80
+	$>T03$>T04$>T03
+	$>H16 $>H16 $>M16 $>M16 $>L8
+
+!12D	r2
+!1	r4
+
+$ALL	/
+
+
+
+!2	@VB242 @P97FB,8 Q5 o2 l8
+	[ (1)[ede f%1~f+%2~g%40y1,%7 ede] g4a=ed
+	  (1) a%1~a=%1~b%11y1,%7 ba=4]2
+
+!1	o2 l8
+	   (1)[@PX @115 ede f%1~f+%2~g%40y1,%7 e @VB251 @P97FB,8 Q5] e4fc<b>
+	r4 (1) f%1~f+%1~g%11y1,%7 gf4
+	r4 (1) e4fc<b>
+	r4 (1) f%1~f+%1~g%11y1,%7 gf4
+
+!N	[ (R1)[ [@128 $h8 $h8 @129 $H8 @128 $h8]6 ]
+	  [$S8]4 $S16$S8$S16$S16$S16$S8
+	  (R1) [$S16]8 (R0) [$S16]6 ]3
+
+!T	[ [$R0]3 $R1 [$R0]3 $R2]3
+
+!D	o1 l8 L8
+	[ [c]8 <ee>e<ff>f<f>f]4
+
+
+
+$<soku	o2 l8 T80 k-bea
+	c4.ce4ce4f4g-fec<b >c4.ce4ce4f4g-4
+
+!2	@VB251 Q10
+	$>soku g4. $>soku g4
+
+!1	Q10
+	_-5 $>soku g4. $>soku g4 _0
+
+!N	(R1) [$S8]4 $S16$S8$S16$S16$S16$S8
+	(R1) $h8 @129 [$S8]4 r8 e%1a%1e%18
+
+!T	[$R0]3 $R1 [$R0]3
+	$>K8 [$>S8]4 r8 @2 o2a%1 @255 o2a%3 r%16
+
+!D	[c]57 <fff+f+ggg>
+
+
+
+$<cir1	o2 l8 T80 k-bea
+	c4<b>ce2c4<b>c c+%1~d%2~e%10y1,%7 fc<b >c<b>c f%1~f+%2~g%10y1,%7 gf4
+
+$<cir2	o2 l8 T80 k-bea
+	ef f%1~f+%2~g%17y1 gfg Q1e16f16e16<b16Q5 >c2y1 ceg
+
+!1	Q5 @V8EB8 @P97FB,8
+!2	@50 g4 @180 @PX
+!12	$>cir1 c2.y1 $>cir1 c2y1c $>cir2
+!1	b%1~b=%2~>c%67 @VB242 @P97FB,8
+!2	b%1~b=%2~>c%47 @VB251 @P97FB,8
+!1	<f%1~f+%2~g%17 e%1~e=%2~f%7 Q10 g4b4 Q5 @V8EB8 @P97FB,8
+!2	<         d4            c   Q10 d4f4 Q5 @49 f4 @180 @PX
+!12	$>cir2
+!1	b%1~b=%2~>c%87 @VB260
+!2	b%1~b=%2~>c%67 @VB26F Q5 @P97FB,8
+!1	 c<b f g @113 g4.
+!2	<g f<b>c @49  c4.
+
+!D	[ccc>c<c>c<cc <b>b<bbb>b<bb aaa>a<b>b<bb >c>c<ccc>c<cc]2
+	(1)[<ff>f<fff>f<f gg>g<ggg>g<g >cc>c<c>c<cc>c <c] c>c<cc>c<c>c
+	(1) <ccc LX c2
+
+
+
+!2	@VB242 @P97FB,8 Q5 o2
+!1	@VB251 @P97FB,8 Q5 o2
+!2	[e2d2e4. Q10 g&2 Q5]3 f2e2f4. Q10 a&2 Q5
+!1	[c2c2c4. Q10 c&2 Q5]3 d2c2d4. Q10 d&2 Q5
+
+!N	[e-%1c%39 e-%1c%39 e-%1c%29 e%1c%19 @129 $H8 @128 e%1c%19]3
+	 e-%1c%39 e-%1c%39 e-%1c%29 e%1c%19 @129 $H8$H8$H8
+
+!T	[$>K8 r4. $>K8 r4. $>K8 r4 $>K8 r8 o2a%3r%7 $>K8 r8]3
+	 $>K8 r4. $>K8 r4. $>K8 r4 $>K8 r8 [$>S8]3
+
+!D	c2c2c4.c4c>c<c <b2b2b4.b4b>b<b
+	a2a2a4.a4a>a<a  b2b2b4.b4b>b<b
+
+
+
+!2	g4 (2)[e4 c. f. g4.e4<b.>f. g4e c g] f d<b>ff4. ge4.
+!1	c4 (2)[c4<g.>c. c4.c4<g. b.>c4c<g>e] d<b f>cc4. cc4.
+!2	g4.(2)                               b f d bb4.>cc2
+!1	c4.(2)                               f d<b>ff4. ee2
+
+!N	[ (R1) [$S8]4 $S16$S8$S16$S16$S16$S8
+	  (R1) [$S16]8 (R0) [$S16]6 ]2
+
+!T	[ [$R0]3 $R1 [$R0]3 $R2]2
+
+!D	L8
+	(2)[>cc>c<cc>c<c>c<]
+	(3)[<bb>b<bb>b<b>b ]
+	(4)[<aa>a<aa>a<a>a ]
+	(3)(2)(3) <aa>a<ab>b<b>b (2)
+
+
+
+!2	@VB27E @P97FB,40 QX<
+!1	r4 @52 @PX
+!21	[c<b>ce]10 fefg4gb>c [c<b>ce]2 [gfgb]2 QX >c1
+
+!D	[ (5)[ccc>c<ccb>c] <<bbb>b<bb>ab <a=a=a=>a=<a=a=g>a= <aaa>a<aa>g-a]2
+
+
+
+!2	^2 S134 ^2 S136
+!1	^2 S134 ^4 @50 ^8 @49 ^8 S136
+
+!N	@128 $h8 $h8 @129 $H8 @128 $h8
+	@128 $h8 $h8 @129 $H8 @128 $h8
+	[$S16]8 (R0) [$S16]6
+
+!T	$R0 $R2
+
+!D	(5) cc>c<cc>c<c>c

@@ -40,7 +40,7 @@ local _ptr = setmetatable({}, {__mode = "k"})
 -- @tparam string fname File name.
 function cls:__init (fname)
   local f = io.open(fname, "rb")
-  Check(f and f:read(6) == "NESM\x1A\x01", "Invalid NSF file")
+  Check(f and f:read(6) == "NESM\026\001", "Invalid NSF file")
 
   _ptr[self] = 0x8000
   f:seek("set", 0)
