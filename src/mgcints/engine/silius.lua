@@ -428,7 +428,7 @@ builder:setSongHandler(function (song, id, ...)
   loop1 = loop1 or #t1
   loop2 = loop2 or rel + #t2 - 1
   local env = Music.Stream(rel, concat(t1), 0x00, loop1)
-  if rel then
+  if rel > 0 then
     for _, v in ipairs {concat(t2), 0x00, loop2} do
       env:push(v)
     end
