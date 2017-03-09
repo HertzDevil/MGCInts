@@ -169,7 +169,7 @@ function cls:dump (str, init, header)
       end
       insert(argstr, f(unpack(p)))
     end
-    line = line .. name .. concat(argstr, ",") .. ' '
+    line = line .. params[0] .. concat(argstr, ",") .. ' '
     l = l2
   end
   insert(out, line)

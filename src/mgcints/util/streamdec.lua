@@ -54,7 +54,8 @@ end
 -- @tparam string str Input stream.
 -- @tparam[opt=1] int init Beginning substring index.
 -- @treturn An iterator function which, when called, returns the next command's
--- output name, and a table containing the command's parameters as byte values.
+-- output name, plus a table containing the command's parameters as byte values
+-- and the command name for key 0.
 function cls:readStream (str, init)
   local sv = Sv(str)
   if init then sv:advance(init - 1) end
@@ -67,7 +68,7 @@ function cls:readStream (str, init)
 
     if sv:seek() + cmd.argcount > #sv:getfull() + 1 then return nil end
     if cmd.term then self.suc = true end
-    local params = {sv:byte(1, cmd.argcount)}
+    local params = {[0] = cmd.name, sv:byte(1, cmd.argcount)}
     sv:advance(cmd.argcount)
     if cmd.callback then
       cmd.callback(self, sv, params)
